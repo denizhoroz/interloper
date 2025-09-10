@@ -41,4 +41,7 @@ coverage/
 *.sublime-workspace
 *.sublime-project
 
+# Python
+venv/
+
 # Optional: ignore test coverage

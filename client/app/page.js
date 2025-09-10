@@ -1,31 +1,9 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-[#FAFDD6]">
       {/* Header */}
-      <header className="w-full py-6 px-4 md:px-12 bg-[#FAFDD6] flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0 shadow-md border-b border-[#AED6CF]">
-        <span className="text-3xl font-bold text-[#647FBC] tracking-wide">Interloper</span>
-        <nav className="flex gap-6 md:gap-10">
-          <a
-            href="#"
-            className="text-[#647FBC] font-semibold text-lg hover:text-[#91ADC8] transition"
-          >
-            Ana Sayfa
-          </a>
-          <a
-            href="#"
-            className="text-[#647FBC] font-semibold text-lg hover:text-[#91ADC8] transition"
-          >
-            Hakkında
-          </a>
-          <a
-            href="#"
-            className="text-[#647FBC] font-semibold text-lg hover:text-[#91ADC8] transition"
-          >
-            İletişim
-          </a>
-        </nav>
-      </header>
-
       {/* Hero Section */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-16 bg-gradient-to-b from-[#91ADC8] via-[#647FBC] to-[#AED6CF]">
         <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold mb-14 md:mb-30 text-[#FAFDD6] drop-shadow-lg text-center">
@@ -41,19 +19,16 @@ export default function Home() {
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-10 w-full max-w-3xl justify-center">
-          <button className="flex-1 bg-[#647FBC] text-[#FAFDD6] font-bold py-6 rounded-xl text-3xl shadow-lg hover:bg-[#91ADC8] hover:text-[#647FBC] transition">
+          <Link href="/lang-select" className="flex-1 bg-[#647FBC] text-[#FAFDD6] font-bold py-6 rounded-xl text-3xl shadow-lg hover:bg-[#91ADC8] hover:text-[#647FBC] transition text-center">
             Hemen Başla
-          </button>
-          <button className="flex-1 bg-[#AED6CF] text-[#647FBC] font-bold py-6 rounded-xl text-3xl shadow-lg hover:bg-[#91ADC8] hover:text-[#FAFDD6] transition">
+          </Link>
+          <Link href="/how-it-works" className="flex-1 bg-[#AED6CF] text-[#647FBC] font-bold py-6 rounded-xl text-3xl shadow-lg hover:bg-[#91ADC8] hover:text-[#FAFDD6] transition text-center">
             Nasıl Çalışır?
-          </button>
+          </Link>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="w-full py-6 px-4 md:px-12 bg-[#FAFDD6] text-center text-[#91ADC8] text-lg font-semibold">
-        © {new Date().getFullYear()} Interloper. Tüm hakları saklıdır.
-      </footer>
     </div>
   );
 }

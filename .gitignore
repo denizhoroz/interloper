@@ -43,5 +43,7 @@ coverage/
 
 # Python
 venv/
+models/
+
 
 # Optional: ignore test coverage

@@ -2,6 +2,10 @@
 import "../globals.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import { shared } from "../../lib/metadata";
+
+// Using shared metadata
+
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -14,8 +18,8 @@ import Footer from "../../components/Footer";
 // });
 
 export const metadata = {
-  title: "Interloper",
-  description: "Learn by living.",
+  title: shared.title,
+  description: shared.description,
 };
 
 export default function RootLayout({ children }) {

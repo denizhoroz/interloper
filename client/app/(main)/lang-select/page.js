@@ -23,7 +23,7 @@ export default function LanguageSelection() {
                             {languages.map((lang) => (
                                 <button
                                     key={lang.code}
-                                    className="bg-[#647FBC] text-[#FAFDD6] font-bold py-8 rounded-2xl text-4xl shadow-xl hover:bg-[#91ADC8] hover:text-[#647FBC] transition min-h-[100px]"
+                                    className="bg-[#647FBC] text-[#FAFDD6] font-bold py-8 rounded-2xl text-4xl shadow-xl hover:bg-[#91ADC8] hover:text-[#647FBC] transition min-h-[100px] hover:cursor-pointer"
                                 >
                                     <span className={`fi fi-${lang.code}`}></span>&nbsp;&nbsp;
                                     {lang.name}

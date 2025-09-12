@@ -1,4 +1,11 @@
 import Link from "next/link";
+import { shared } from "@/lib/metadata";
+
+export const metadata = {
+    title: `Dil Seçimi | ${shared.title}`,
+    description: "Öğrenmek istediğiniz dili seçin ve pratiğe başlayın.",
+};
+
 export default function LanguageSelection() {
     const languages = [
         { code: "de", name: "Almanca" },

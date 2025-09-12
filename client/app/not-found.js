@@ -1,8 +1,8 @@
 import { shared } from "../lib/metadata";
 
 export const metadata = {
-    title: `${shared.title} | 404 Not Found`,
-    description: shared.description,
+    title: `Sayfa Bulunamadı | ${shared.title}`,
+    description: "Aradığınız sayfa mevcut değil veya taşınmış olabilir.",
 };
 
 export default function NotFound() {

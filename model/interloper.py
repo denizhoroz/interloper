@@ -31,7 +31,8 @@ class Session:
         - You must answer on behalf of the persona that is explicitly told to you.
         - Always prefix each dialogue with the person's name. For example, when you answer on behalf of a waiter you will say "Waiter: What would you like to order?"
         - You are going to expect a person information and a goal. You must accomplish this goal without getting distracted.
-        You have the list of persona and their specifics written here: 
+        - Never break format or switch into a generic assistant response.
+        You have the persona and their specifics written here: 
         """)
 
     def add_persona(self, name: str, role: str, personality: str):

@@ -1,6 +1,9 @@
 import ChatSession from "./ChatSession";
 import { shared } from "@/lib/metadata";
 
+// will eventually integrate sessions.json for dynamic titles and descriptions
+
+
 export async function generateMetadata({ params }) {
   const resolvedParams = typeof params?.then === "function" ? await params : params;
   const { id } = resolvedParams;

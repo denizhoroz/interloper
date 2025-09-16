@@ -1,5 +1,6 @@
 "use client";
 import { use, useState, useRef, useEffect } from "react";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function SessionDetail({ params }) {
   const { "lang-code": langCode, id } = typeof params.then === "function" ? use(params) : params;
@@ -8,10 +9,6 @@ export default function SessionDetail({ params }) {
     {
       from: "bot",
       text: "Merhaba! Restorana hoş geldiniz. Ne sipariş vermek istersiniz?",
-    },
-    {
-      from: "user",
-      text: "Bir ekmek alabilir miyim?",
     },
   ]);
 
@@ -25,12 +22,25 @@ export default function SessionDetail({ params }) {
     }
   }, [messages]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
     setMessages([...messages, { from: "user", text: input }]);
     setInput("");
+    const response = await fetch(`${API_BASE_URL}/api/sessions/${id}/message`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: input }),
+    });
     // bot response logic can be added here
+    if (response.ok) {
+      const data = await response.json();
+      setMessages((prev) => [...prev, { from: "bot", text: data.reply }]);
+    } else {
+      setMessages((prev) => [...prev, { from: "bot", text: "Üzgünüm, bir hata oluştu." }]);
+    }
   };
 
   return (

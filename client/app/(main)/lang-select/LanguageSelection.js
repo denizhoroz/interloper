@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 export default function LanguageSelection() {
     const router = useRouter();
     const languages = [
-        { code: "de", name: "Almanca", disabled: true },
         { code: "gb", name: "İngilizce", disabled: false },
+        { code: "de", name: "Almanca", disabled: true }
     ];
     
     return (

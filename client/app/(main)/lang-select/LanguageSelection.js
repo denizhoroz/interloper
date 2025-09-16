@@ -5,9 +5,8 @@ import { useRouter } from "next/navigation";
 export default function LanguageSelection() {
     const router = useRouter();
     const languages = [
-        { code: "de", name: "Almanca" },
-        { code: "gb", name: "İngilizce" },
-
+        { code: "de", name: "Almanca", disabled: true },
+        { code: "gb", name: "İngilizce", disabled: false },
     ];
     
     return (
@@ -28,11 +27,19 @@ export default function LanguageSelection() {
                             {languages.map((lang) => (
                                 <button
                                     key={lang.code}
-                                    className="bg-[#647FBC] text-[#FAFDD6] font-bold py-8 rounded-2xl text-4xl shadow-xl hover:bg-[#91ADC8] hover:text-[#647FBC] transition min-h-[100px] hover:cursor-pointer"
-                                    onClick={() => router.push(`/${lang.code}/sessions`)}
+                                    className={`bg-[#647FBC] text-[#FAFDD6] font-bold py-8 rounded-2xl text-4xl shadow-xl transition min-h-[100px] hover:cursor-pointer flex items-center justify-center
+                                        ${lang.disabled
+                                            ? "opacity-50 cursor-not-allowed hover:bg-[#647FBC] hover:text-[#FAFDD6]"
+                                            : "hover:bg-[#91ADC8] hover:text-[#647FBC]"
+                                        }`
+                                    }
+                                    onClick={() => {
+                                        if (!lang.disabled) router.push(`/${lang.code}/sessions`);
+                                    }}
+                                    disabled={lang.disabled}
                                 >
                                     <span className={`fi fi-${lang.code}`}></span>&nbsp;&nbsp;
-                                    {lang.name}
+                                    {(lang.disabled ? "Yakında" : lang.name )}
                                 </button>
                             ))}
                         </div>

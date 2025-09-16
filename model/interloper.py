@@ -3,7 +3,9 @@ from langchain_community.chat_models import ChatLlamaCpp
 from langchain_core.messages import SystemMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.messages import HumanMessage, AIMessage
+from langchain.chains import LLMChain
 import json
+import re
 
 class Session:
     def __init__(self, model, session_n: int):
@@ -146,7 +148,54 @@ class Evaluator:
         self.model = model
 
     def evaluate(self, session_history):
-        pass
+        '''
+        Evaluates the HUMAN's language proficiency in the session history.
+
+        Params:
+            session_history (list) - Session history
+
+        Returns:
+            evaluation_results (str) - Evaluation results
+        '''
+        evaluation_prompt = ChatPromptTemplate.from_messages([
+            ("system", "You are a strict language proficiency evaluator. "
+                    "Evaluate the HUMAN's language proficiency in the conversation. "
+                    "Always focus on grammar, vocabulary, fluency, and clarity. "
+                    "Give a score from 1–10, and short feedback (2–3 sentences)."
+                    "Always use this format when formatting: Grammar: 4.5/10 or Fluency: 8.5/10 for example."),
+            ("human", "Conversation:\n{conversation}\n\nNow give your evaluation:")
+        ])
+
+        evaluation_chain = LLMChain(
+            llm=self.model, 
+            prompt=evaluation_prompt
+        )
+
+        conversation_text = self.parse_history(session_history)
+
+        evaluation_results = evaluation_chain.invoke({"conversation": conversation_text})['text']
+        evaluation_results = self.parse_result(evaluation_results)
+
+        return evaluation_results
 
     def translate(self, session_history):
         pass
+
+    def parse_history(self, session_history):
+        conversation_text = "\n".join([
+            f"{m.type.upper()}: {m.content}" for m in session_history[1:]
+        ])
+        
+        return conversation_text
+    
+    def parse_result(self, result: str):
+        pattern = r"(Grammar|Vocabulary|Fluency|Clarity):\s*([\d\.]+)/10\s*(.*?)(?=(Grammar|Vocabulary|Fluency|Clarity|$))"
+        matches = re.findall(pattern, result, flags=re.DOTALL)
+
+        evaluation = {}
+        for section, score, comment, _ in matches:
+            evaluation[section] = {
+                "score": float(score),
+                "comment": comment.strip()
+            }
+        return evaluation

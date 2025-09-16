@@ -8,8 +8,8 @@ export const metadata = {
 export default function NotFound() {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-[#AED6CF]">
-            <h1 className="text-6xl font-extrabold text-[#647FBC] mb-8 drop-shadow-lg">404</h1>
-            <div className="bg-[#FAFDD6] rounded-full p-6 shadow-2xl mb-8 flex items-center justify-center">
+            <h1 className="text-6xl font-extrabold text-[#647FBC] drop-shadow-lg">404</h1>
+            <div className="mb-8 flex items-center justify-center">
                 <img
                     src="/annoying-dog-undertale.gif"
                     alt="Annoying Dog"

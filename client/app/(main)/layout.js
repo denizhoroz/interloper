@@ -22,12 +22,12 @@ export const metadata = {
   description: shared.description,
 };
 
-export default function RootLayout({ children }) {
+export default function MainLayout({ children }) {
   return (
     <>
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+      <Header />
+      <main className="flex-1">{children}</main>
+      <Footer />
     </>
   );
 }

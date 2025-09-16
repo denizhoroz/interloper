@@ -44,7 +44,7 @@ export default function SessionDetail({ params }) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#E3F6F5] p-4">
+    <div className="flex flex-col items-center justify-center bg-[#E3F6F5] p-4">
       <div className="w-full max-w-3xl flex flex-col flex-1 h-[80vh]">
         <div className="mb-6 bg-[#FAFDD6] p-4 rounded-lg shadow-md text-center relative overflow-hidden">
           {/* Decorative gradient bar */}

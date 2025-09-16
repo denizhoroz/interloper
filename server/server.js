@@ -13,6 +13,9 @@ app.get('/', (req, res) => {
   res.sendStatus(200);
 });
 
+const sessionsRouter = require('./routers/sessions');
+app.use('/sessions', sessionsRouter);
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

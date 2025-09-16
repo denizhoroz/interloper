@@ -16,7 +16,7 @@ const scores = {
 // Example critiques (replace with dynamic data if needed)
 const critiques = {
 	grammar: "Cümle yapılarında küçük hatalar mevcut, ancak genel olarak anlaşılır.",
-	vocabulary: "Kelime seçiminiz zengin ve çeşitliydi.",
+	vocabulary: "Cümle yapılarında küçük hatalar mevcut, ancak genel olarak anlaşılır.",
 	fluency: "Konuşma sırasında bazı duraksamalar oldu.",
 	clarity: "İletmek istediğiniz mesaj net ve anlaşılırdı.",
 };
@@ -33,8 +33,8 @@ const scenario = {
 
 export default function EvaluationPage() {
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center bg-[#E3F6F5]">
-			<div className="bg-[#FAFDD6] rounded-xl shadow-lg p-8 w-full max-w-4xl flex flex-col md:flex-row gap-8">
+		<div className="flex flex-col items-center justify-center bg-[#E3F6F5] p-8">
+			<div className="bg-[#FAFDD6] rounded-xl shadow-lg p-12 w-full max-w-7xl flex flex-col md:flex-row gap-12 min-h-[70vh]">
 				{/* Scenario Overview */}
 				<div className="md:w-1/2 w-full flex flex-col justify-center">
 					<h2 className="text-4xl font-bold text-[#647FBC] mb-6 text-center md:text-left">
@@ -56,7 +56,7 @@ export default function EvaluationPage() {
 				</div>
 				{/* Evaluation Section */}
 				<div className="md:w-1/2 w-full flex flex-col items-center">
-					<h1 className="text-5xl font-bold text-[#647FBC] mb-10 text-center">
+					<h1 className="text-4xl md:text-5xl font-bold text-[#647FBC] mb-10 text-center">
 						Senaryo Değerlendirmesi
 					</h1>
 					<div className="space-y-8 w-full">
@@ -75,7 +75,7 @@ export default function EvaluationPage() {
 									Puan: {scores[c.key]}/10
 								</span>
 								{/* Critique section */}
-								<div className="mt-2 w-2/3 bg-[#E3F6F5] rounded-lg p-3 border border-[#AED6CF] text-lg text-[#647FBC]">
+								<div className="mt-2 w-2/3 bg-[#E3F6F5] rounded-lg p-3 border-4 border-[#AED6CF] text-lg text-[#647FBC]">
 									{critiques[c.key]}
 								</div>
 							</div>

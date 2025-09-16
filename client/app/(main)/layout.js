@@ -26,7 +26,7 @@ export default function MainLayout({ children }) {
   return (
     <>
       <Header />
-      <main className="flex-1">{children}</main>
+      <main>{children}</main>
       <Footer />
     </>
   );

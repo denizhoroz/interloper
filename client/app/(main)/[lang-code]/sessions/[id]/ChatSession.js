@@ -11,8 +11,18 @@ export default function SessionDetail({ params }) {
       text: "Merhaba! Restorana hoş geldiniz. Ne sipariş vermek istersiniz?",
     },
   ]);
+  const [sessionInfo, setSessionInfo] = useState(null);
 
   const chatRef = useRef(null);
+
+  useEffect(() => {
+    let didRun = false;
+    // Fetch session details from backend (which proxies Python service)
+    fetch(`${API_BASE_URL}/api/sessions/${id}`)
+      .then(res => res.json())
+      .then(data => setSessionInfo(data))
+      .catch(() => setSessionInfo(null));
+  }, [id]);
 
   useEffect(() => {
     if (chatRef.current) {
@@ -46,13 +56,20 @@ export default function SessionDetail({ params }) {
         <div className="mb-4 sm:mb-6 bg-[#FAFDD6] p-2 sm:p-4 rounded-lg shadow-md text-center relative overflow-hidden">
           {/* Decorative gradient bar */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-2 bg-gradient-to-r from-[#91ADC8] via-[#647FBC] to-[#AED6CF] rounded-b-xl shadow" />
-          {/* Decorative icon */}
           <div className="flex justify-center mb-2 mt-2">
             <span className="inline-block text-3xl sm:text-5xl animate-bounce">🍽</span>
           </div>
           <h1 className="text-xl sm:text-3xl md:text-6xl font-extrabold text-[#647FBC] mb-2 sm:mb-4 text-center drop-shadow-lg">
             {langCode === "gb" ? "İngilizce" : langCode === "de" ? "Almanca" : langCode} Oturumu #{id}
           </h1>
+          {/* Show session info from Python service if available */}
+          {sessionInfo && (
+            <div className="text-base sm:text-xl text-[#647FBC] mt-2">
+              {sessionInfo.message
+                ? sessionInfo.message
+                : JSON.stringify(sessionInfo)}
+            </div>
+          )}
           <h2 className="text-lg sm:text-2xl md:text-3xl text-[#647FBC] font-semibold mb-1 sm:mb-2">
             {id === "1"
               ? "Senaryo 1: Restoran Diyaloğu"

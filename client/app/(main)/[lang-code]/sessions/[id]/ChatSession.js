@@ -5,22 +5,24 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 export default function SessionDetail({ params }) {
   const { "lang-code": langCode, id } = typeof params.then === "function" ? use(params) : params;
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState([
-    {
-      from: "bot",
-      text: "Merhaba! Restorana hoş geldiniz. Ne sipariş vermek istersiniz?",
-    },
-  ]);
+  const [messages, setMessages] = useState([]);
   const [sessionInfo, setSessionInfo] = useState(null);
 
   const chatRef = useRef(null);
 
   useEffect(() => {
-    let didRun = false;
-    // Fetch session details from backend (which proxies Python service)
     fetch(`${API_BASE_URL}/api/sessions/${id}`)
       .then(res => res.json())
-      .then(data => setSessionInfo(data))
+      .then(data => {
+        setSessionInfo(data);
+        // If sessionInfo.message exists, add it as a bot message at the start
+        if (data && data.message) {
+          setMessages(prev => [
+            { from: "bot", text: data.message },
+            ...prev
+          ]);
+        }
+      })
       .catch(() => setSessionInfo(null));
   }, [id]);
 

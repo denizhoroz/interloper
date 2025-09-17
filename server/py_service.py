@@ -18,8 +18,9 @@ def home():
 def get_session(id):
     # session = Session(model=llm, session_n=int(id))
 
-    _, output, _ = session.generate_message() # This will take 1 minutes to execute, add timers to forbid user from texting
-    return jsonify(output)
+    return jsonify({"message": 'NI'})
+    # _, output, _ = session.generate_message() # This will take 1 minutes to execute, add timers to forbid user from texting
+    # return jsonify(output)
 
 # When a message is sent
 @app.route('/process', methods=['POST'])
@@ -34,7 +35,7 @@ def process():
     #     result = {"reply": "you said lol!"}
     # else:
     #     result = {"reply": f"Python received: {data['message']}"}
-    return jsonify(result)
+    # return jsonify(result)
 
 if __name__ == '__main__':
     app.run(port=6000)

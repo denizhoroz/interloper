@@ -1,4 +1,5 @@
 "use client";
+// these will be updated by api in the future
 const criteria = [
 	{ key: "grammar", label: "Gramer" },
 	{ key: "vocabulary", label: "Kelime Dağarcığı" },

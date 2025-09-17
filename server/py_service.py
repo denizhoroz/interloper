@@ -3,6 +3,9 @@ from flask import Flask, request, jsonify
 # from interloper import initialize_model, Session, Evaluator
 app = Flask(__name__)
 
+# Initialize values
+session = None
+
 # When the service initializes
 @app.route('/', methods=['GET'])
 def home():
@@ -10,20 +13,27 @@ def home():
 
     return "Model is initialized!"
 
+# When the session is clicked
 @app.route('/session/<id>', methods=['GET'])
 def get_session(id):
-    # Use the id to fetch or process session details
-    print(f"Received session ID: {id}")
-    return jsonify({"message": f"Session ID from Python: {id}"})
+    # session = Session(model=llm, session_n=int(id))
 
+    _, output, _ = session.generate_message() # This will take 1 minutes to execute, add timers to forbid user from texting
+    return jsonify(output)
+
+# When a message is sent
 @app.route('/process', methods=['POST'])
 def process():
     data = request.json
+    human_message = data['message']
+
+
+
     # print(f"Received data: {data}")
-    if data['message'] == "lol":
-        result = {"reply": "you said lol!"}
-    else:
-        result = {"reply": f"Python received: {data['message']}"}
+    # if data['message'] == "lol":
+    #     result = {"reply": "you said lol!"}
+    # else:
+    #     result = {"reply": f"Python received: {data['message']}"}
     return jsonify(result)
 
 if __name__ == '__main__':

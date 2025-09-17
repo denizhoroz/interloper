@@ -7,6 +7,18 @@ from langchain.chains import LLMChain
 import json
 import re
 
+def initialize_model(model_path, n_ctx=4096, n_gpu_layers=-1, n_batch=512, max_tokens=256, temperature=0.7):
+    llm = ChatLlamaCpp(
+        model_path=model_path, 
+        n_ctx=n_ctx,       
+        n_gpu_layers=-n_gpu_layers,     
+        n_batch=n_batch,       
+        max_tokens=max_tokens,
+        temperature=temperature
+    )
+
+    return llm
+
 class Session:
     def __init__(self, model, session_n: int):
         # Initialize model

@@ -24,8 +24,6 @@ router.post("/:id/message", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
   console.log(`Received message for session ${id}: ${message}`);
-
-  // For now, just echo back the message
 });
 
 // This route will forward to Python

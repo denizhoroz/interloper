@@ -42,3 +42,9 @@ coverage/
 *.sublime-project
 
 # Optional: ignore test coverage
+
+# Python
+venv/
+models/
+.env
+.gradio

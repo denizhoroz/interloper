@@ -1,11 +1,14 @@
 # python_service.py
 from flask import Flask, request, jsonify
+from interloper import initialize_model, Session, Evaluator
 app = Flask(__name__)
 
-
+# When the service initializes
 @app.route('/', methods=['GET'])
 def home():
-    return "Python Service is running!"
+    llm = initialize_model(model_path="../models/llama-3-8b-instruct_Q4_K_M.gguf")
+
+    return "Model is initialized!"
 
 @app.route('/process', methods=['POST'])
 def process():

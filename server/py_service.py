@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 # Initialize values
 session = None
-status = "<CONTINUE>"
+session_history = None
 
 # When the service initializes
 @app.route('/', methods=['GET'])
@@ -17,6 +17,7 @@ def home():
 # When the session is clicked
 @app.route('/session/<id>', methods=['GET'])
 def get_session(id):
+    # global session
     # session = Session(model=llm, session_n=int(id))
 
     # _, output, _ = session.generate_message() # This will take 1 minutes to execute, add timers to forbid user from texting
@@ -28,9 +29,9 @@ def process():
     data = request.json
     human_message = data['message']
 
-    status, output, _ = session.generate_message(input=str(human_message))
+    status, output, session_history = session.generate_message(input=str(human_message))
 
-
+    return jsonify({'message': str(output), 'status': str(status)}) # status: <END OF CONVERSATION>, <CONTINUE>
 
     # print(f"Received data: {data}")
     # if data['message'] == "lol":

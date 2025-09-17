@@ -46,7 +46,7 @@ export default function SessionDetail({ params }) {
     });
     if (response.ok) {
       const data = await response.json();
-      setMessages((prev) => [...prev, { from: "bot", text: data.reply }]);
+      setMessages((prev) => [...prev, { from: "bot", text: data.message }]);
     } else {
       setMessages((prev) => [...prev, { from: "bot", text: "Üzgünüm, bir hata oluştu." }]);
     }
@@ -64,14 +64,14 @@ export default function SessionDetail({ params }) {
           <h1 className="text-xl sm:text-3xl md:text-6xl font-extrabold text-[#647FBC] mb-2 sm:mb-4 text-center drop-shadow-lg">
             {langCode === "gb" ? "İngilizce" : langCode === "de" ? "Almanca" : langCode} Oturumu #{id}
           </h1>
-          {/* Show session info from Python service if available */}
+          {/* Show session info from Python service if available
           {sessionInfo && (
             <div className="text-base sm:text-xl text-[#647FBC] mt-2">
               {sessionInfo.message
                 ? sessionInfo.message
                 : JSON.stringify(sessionInfo)}
             </div>
-          )}
+          )} */}
           <h2 className="text-lg sm:text-2xl md:text-3xl text-[#647FBC] font-semibold mb-1 sm:mb-2">
             {id === "1"
               ? "Senaryo 1: Restoran Diyaloğu"

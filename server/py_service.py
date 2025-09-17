@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 # Initialize values
-session = None
+# session = None
 session_history = None
 
 # When the service initializes
@@ -21,7 +21,7 @@ def get_session(id):
     # session = Session(model=llm, session_n=int(id))
 
     # _, output, _ = session.generate_message() # This will take 1 minutes to execute, add timers to forbid user from texting
-    return jsonify({"message": str(output)})
+    return jsonify({"message": "initialization message"}) # runs on init
 
 # When a message is sent
 @app.route('/process', methods=['POST'])
@@ -29,9 +29,10 @@ def process():
     data = request.json
     human_message = data['message']
 
-    status, output, session_history = session.generate_message(input=str(human_message))
+    # status, output, session_history = session.generate_message(input=str(human_message))
 
-    return jsonify({'message': str(output), 'status': str(status)}) # status: <END OF CONVERSATION>, <CONTINUE>
+    return jsonify({'message': "message msg", 'status': "status msg"}) # status: <END OF CONVERSATION>, <CONTINUE>
+    # message will be bot's reply, status will indicate conversation end or continuation
 
     # print(f"Received data: {data}")
     # if data['message'] == "lol":

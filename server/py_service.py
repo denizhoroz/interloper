@@ -5,6 +5,7 @@ app = Flask(__name__)
 
 # Initialize values
 session = None
+status = "<CONTINUE>"
 
 # When the service initializes
 @app.route('/', methods=['GET'])
@@ -18,15 +19,16 @@ def home():
 def get_session(id):
     # session = Session(model=llm, session_n=int(id))
 
-    return jsonify({"message": 'NI'})
     # _, output, _ = session.generate_message() # This will take 1 minutes to execute, add timers to forbid user from texting
-    # return jsonify(output)
+    return jsonify({"message": str(output)})
 
 # When a message is sent
 @app.route('/process', methods=['POST'])
 def process():
     data = request.json
     human_message = data['message']
+
+    status, output, _ = session.generate_message(input=str(human_message))
 
 
 

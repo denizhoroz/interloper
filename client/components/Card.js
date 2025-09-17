@@ -1,3 +1,4 @@
+import Image from 'next/image';
 export default function Card({ title, description, image, onClick, children }) {
     return (
         <div
@@ -7,7 +8,7 @@ export default function Card({ title, description, image, onClick, children }) {
             role="button"
         >
             {image && (
-                <img
+                <Image
                     src={image}
                     alt={title}
                     className="w-full sm:w-50 md:w-80 h-40 md:h-56 object-cover rounded-lg mb-3 sm:mb-0 flex-shrink-0"

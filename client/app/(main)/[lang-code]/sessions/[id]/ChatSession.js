@@ -1,5 +1,6 @@
 "use client";
 import { use, useState, useRef, useEffect } from "react";
+import Image from "next/image";
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function SessionDetail({ params }) {
@@ -92,7 +93,7 @@ export default function SessionDetail({ params }) {
             {messages.map((msg, idx) =>
               msg.from === "bot" ? (
                 <div className="flex items-end justify-start" key={idx}>
-                  <img
+                  <Image 
                     src="/avatar.png"
                     alt="Bot Avatar"
                     className="w-10 h-10 sm:w-22 sm:h-22 rounded-full mr-2 sm:mr-3 border border-[#AED6CF] bg-white"
@@ -106,7 +107,7 @@ export default function SessionDetail({ params }) {
                   <div className="bg-[#647FBC] text-[#FAFDD6] px-3 py-2 sm:px-5 sm:py-3 rounded-lg max-w-[80%] sm:max-w-[70%] text-base sm:text-2xl border border-[#AED6CF] break-words whitespace-pre-line overflow-x-auto">
                     {msg.text}
                   </div>
-                  <img
+                  <Image
                     src="/avatar.png"
                     alt="User Avatar"
                     className="w-10 h-10 sm:w-22 sm:h-22 rounded-full ml-2 sm:ml-3 border border-[#AED6CF] bg-white"

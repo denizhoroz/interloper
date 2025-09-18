@@ -15,6 +15,8 @@ export default function NotFound() {
                 <Image
                     src="/annoying-dog-undertale.gif"
                     alt="Annoying Dog"
+                    width={256}
+                    height={256}
                     className="w-64 h-64 object-contain"
                 />
             </div>

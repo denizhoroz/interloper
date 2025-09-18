@@ -96,6 +96,8 @@ export default function SessionDetail({ params }) {
                   <Image 
                     src="/avatar.png"
                     alt="Bot Avatar"
+                    width={80}
+                    height={80}
                     className="w-10 h-10 sm:w-22 sm:h-22 rounded-full mr-2 sm:mr-3 border border-[#AED6CF] bg-white"
                   />
                   <div className="bg-[#FAFDD6] text-[#647FBC] px-3 py-2 sm:px-5 sm:py-3 rounded-lg max-w-[80%] sm:max-w-[70%] text-base sm:text-2xl border border-[#AED6CF] break-words whitespace-pre-line overflow-x-auto">
@@ -110,6 +112,8 @@ export default function SessionDetail({ params }) {
                   <Image
                     src="/avatar.png"
                     alt="User Avatar"
+                    width={80}
+                    height={80}
                     className="w-10 h-10 sm:w-22 sm:h-22 rounded-full ml-2 sm:ml-3 border border-[#AED6CF] bg-white"
                   />
                 </div>

@@ -1,4 +1,6 @@
 import { shared } from "../lib/metadata";
+import Image from "next/image"
+import Link from "next/link"
 
 export const metadata = {
     title: `Sayfa Bulunamadı | ${shared.title}`,
@@ -10,7 +12,7 @@ export default function NotFound() {
         <div className="flex flex-col items-center justify-center min-h-screen bg-[#AED6CF]">
             <h1 className="text-6xl font-extrabold text-[#647FBC] drop-shadow-lg">404</h1>
             <div className="mb-8 flex items-center justify-center">
-                <img
+                <Image
                     src="/annoying-dog-undertale.gif"
                     alt="Annoying Dog"
                     className="w-64 h-64 object-contain"
@@ -20,12 +22,12 @@ export default function NotFound() {
             <p className="text-2xl text-[#647FBC] mb-10 text-center bg-[#FAFDD6]/80 px-8 py-4 rounded-xl shadow">
                 Aradığınız sayfa mevcut değil veya taşınmış olabilir.
             </p>
-            <a
+            <Link
                 href="/"
                 className="bg-[#647FBC] text-[#FAFDD6] font-bold py-4 px-10 rounded-xl text-xl shadow-lg hover:bg-[#91ADC8] transition"
             >
-                Ana Sayfa'ya Dön
-            </a>
+                Ana Sayfaya Dön
+            </Link>
         </div>
     );
 }

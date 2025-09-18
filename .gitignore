@@ -1,3 +1,4 @@
+# Python
 # Node.js
 node_modules/
 npm-debug.log*
@@ -40,8 +41,6 @@ coverage/
 *.local
 *.sublime-workspace
 *.sublime-project
-
-# Optional: ignore test coverage
 
 # Python
 venv/

@@ -7,7 +7,14 @@ const PY_SERVICE_URL = process.env.PYTHON_SERVICE_URL;
 
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  res.json({ message: `Session ID: ${id}` });
+  try {
+    console.log(`Forwarding request for session ID: ${id} to Python service`);
+    const pyRes = await axios.get(`${PY_SERVICE_URL}/session/${id}`);
+    res.json(pyRes.data);
+  } catch (error) {
+    console.error(`Error communicating with Python service: ${error.message}`);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 router.post("/:id/message", async (req, res) => {

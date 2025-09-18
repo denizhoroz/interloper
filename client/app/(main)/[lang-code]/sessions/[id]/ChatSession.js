@@ -1,18 +1,31 @@
 "use client";
 import { use, useState, useRef, useEffect } from "react";
+import Image from "next/image";
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function SessionDetail({ params }) {
   const { "lang-code": langCode, id } = typeof params.then === "function" ? use(params) : params;
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState([
-    {
-      from: "bot",
-      text: "Merhaba! Restorana hoş geldiniz. Ne sipariş vermek istersiniz?",
-    },
-  ]);
+  const [messages, setMessages] = useState([]);
+  const [sessionInfo, setSessionInfo] = useState(null);
 
   const chatRef = useRef(null);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/sessions/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        setSessionInfo(data);
+        // If sessionInfo.message exists, add it as a bot message at the start
+        if (data && data.message) {
+          setMessages(prev => [
+            { from: "bot", text: data.message },
+            ...prev
+          ]);
+        }
+      })
+      .catch(() => setSessionInfo(null));
+  }, [id]);
 
   useEffect(() => {
     if (chatRef.current) {
@@ -34,7 +47,7 @@ export default function SessionDetail({ params }) {
     });
     if (response.ok) {
       const data = await response.json();
-      setMessages((prev) => [...prev, { from: "bot", text: data.reply }]);
+      setMessages((prev) => [...prev, { from: "bot", text: data.message }]);
     } else {
       setMessages((prev) => [...prev, { from: "bot", text: "Üzgünüm, bir hata oluştu." }]);
     }
@@ -46,13 +59,20 @@ export default function SessionDetail({ params }) {
         <div className="mb-4 sm:mb-6 bg-[#FAFDD6] p-2 sm:p-4 rounded-lg shadow-md text-center relative overflow-hidden">
           {/* Decorative gradient bar */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-2 bg-gradient-to-r from-[#91ADC8] via-[#647FBC] to-[#AED6CF] rounded-b-xl shadow" />
-          {/* Decorative icon */}
           <div className="flex justify-center mb-2 mt-2">
             <span className="inline-block text-3xl sm:text-5xl animate-bounce">🍽</span>
           </div>
           <h1 className="text-xl sm:text-3xl md:text-6xl font-extrabold text-[#647FBC] mb-2 sm:mb-4 text-center drop-shadow-lg">
             {langCode === "gb" ? "İngilizce" : langCode === "de" ? "Almanca" : langCode} Oturumu #{id}
           </h1>
+          {/* Show session info from Python service if available
+          {sessionInfo && (
+            <div className="text-base sm:text-xl text-[#647FBC] mt-2">
+              {sessionInfo.message
+                ? sessionInfo.message
+                : JSON.stringify(sessionInfo)}
+            </div>
+          )} */}
           <h2 className="text-lg sm:text-2xl md:text-3xl text-[#647FBC] font-semibold mb-1 sm:mb-2">
             {id === "1"
               ? "Senaryo 1: Restoran Diyaloğu"
@@ -73,7 +93,7 @@ export default function SessionDetail({ params }) {
             {messages.map((msg, idx) =>
               msg.from === "bot" ? (
                 <div className="flex items-end justify-start" key={idx}>
-                  <img
+                  <Image 
                     src="/avatar.png"
                     alt="Bot Avatar"
                     className="w-10 h-10 sm:w-22 sm:h-22 rounded-full mr-2 sm:mr-3 border border-[#AED6CF] bg-white"
@@ -87,7 +107,7 @@ export default function SessionDetail({ params }) {
                   <div className="bg-[#647FBC] text-[#FAFDD6] px-3 py-2 sm:px-5 sm:py-3 rounded-lg max-w-[80%] sm:max-w-[70%] text-base sm:text-2xl border border-[#AED6CF] break-words whitespace-pre-line overflow-x-auto">
                     {msg.text}
                   </div>
-                  <img
+                  <Image
                     src="/avatar.png"
                     alt="User Avatar"
                     className="w-10 h-10 sm:w-22 sm:h-22 rounded-full ml-2 sm:ml-3 border border-[#AED6CF] bg-white"

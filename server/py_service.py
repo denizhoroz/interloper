@@ -1,4 +1,5 @@
 # python_service.py
+import time
 from flask import Flask, request, jsonify
 # from interloper import initialize_model, Session, Evaluator
 app = Flask(__name__)
@@ -38,7 +39,8 @@ def process():
     human_message = data['message']
 
     # status, output, session_history = session.generate_message(input=str(human_message))
-
+    time.sleep(2)  # Simulate processing time
+    print(f"Processed message: {human_message}")
     return jsonify({'message': "message", 'status': "status"}) # status: <END OF CONVERSATION>, <CONTINUE>
     # message will be bot's reply, status will indicate conversation end or continuation
 

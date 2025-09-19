@@ -8,7 +8,8 @@ import {
   MessageList,
   Message,
   MessageInput,
-  Avatar
+  Avatar,
+  TypingIndicator
 } from '@chatscope/chat-ui-kit-react';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -17,6 +18,7 @@ export default function SessionDetail({ params }) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [sessionInfo, setSessionInfo] = useState(null);
+  const [botTyping, setBotTyping] = useState(false);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/sessions/${id}`)
@@ -31,7 +33,7 @@ export default function SessionDetail({ params }) {
               sender: "Bot",
               direction: "incoming",
               position: "single",
-              avatar: "/avatar.png"
+              avatar: <Avatar src="/avatar.png" name="Bot" size="md"/>
             },
             ...prev
           ]);
@@ -42,7 +44,6 @@ export default function SessionDetail({ params }) {
 
   const handleSend = async (val) => {
     if (!val.trim()) return;
-    // Add user message
     setMessages(prev => [
       ...prev,
       {
@@ -50,11 +51,12 @@ export default function SessionDetail({ params }) {
         sender: "User",
         direction: "outgoing",
         position: "single",
-        avatar: "/fris.jpg"
+        avatar: <Avatar src="/fris.jpg" name="User" size="md"/>
       }
     ]);
     setInput("");
-    // Send to backend
+    setBotTyping(true); // Show typing indicator
+
     const response = await fetch(`${API_BASE_URL}/api/sessions/${id}/message`, {
       method: "POST",
       headers: {
@@ -62,6 +64,8 @@ export default function SessionDetail({ params }) {
       },
       body: JSON.stringify({ message: val }),
     });
+    setBotTyping(false); // Hide typing indicator
+
     if (response.ok) {
       const data = await response.json();
       setMessages(prev => [
@@ -71,7 +75,7 @@ export default function SessionDetail({ params }) {
           sender: "Bot",
           direction: "incoming",
           position: "single",
-          avatar: "/avatar.png"
+          avatar: <Avatar src="/avatar.png" name="Bot" size="md"/>
         }
       ]);
     } else {
@@ -82,7 +86,7 @@ export default function SessionDetail({ params }) {
           sender: "Bot",
           direction: "incoming",
           position: "single",
-          avatar: "/avatar.png"
+          avatar: <Avatar src="/avatar.png" name="Bot" size="md"/>
         }
       ]);
     }
@@ -115,7 +119,9 @@ export default function SessionDetail({ params }) {
         <div className="flex-1 rounded-lg shadow-md overflow-hidden">
           <MainContainer>
             <ChatContainer>
-              <MessageList>
+              <MessageList
+                typingIndicator={botTyping ? <TypingIndicator content="Bot yazıyor..." /> : null}
+              >
                 {messages.map((msg, index) => (
                   <Message
                     key={index}
@@ -124,7 +130,8 @@ export default function SessionDetail({ params }) {
                       sentTime: "now",  
                       sender: msg.sender,
                       direction: msg.direction,
-                      position: msg.position
+                      position: msg.position,
+                      avatarSpacer: true
                     }}
                   >
                     {msg.avatar && (typeof msg.avatar === 'string' ? <Avatar src={msg.avatar} name={msg.sender} /> : msg.avatar)}
@@ -135,9 +142,10 @@ export default function SessionDetail({ params }) {
                 value={input}
                 onChange={setInput}
                 onSend={handleSend}
-                placeholder="Cevabınızı yazın..."
+                placeholder={botTyping && "Lütfen bekleyin..." || "Cevabınızı yazın..."}
                 attachButton={false}
                 sendButton={true}
+                disabled={botTyping}
               />
             </ChatContainer>
           </MainContainer>

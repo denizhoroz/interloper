@@ -1,4 +1,4 @@
-// cursor jumping to the end post bot response fix DONE
+// cursor jumping to the end post bot response also sometimes disappearing fix NEEDED
 "use client";
 import { use, useState, useEffect} from "react";
 import Image from "next/image";

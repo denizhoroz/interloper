@@ -1,3 +1,4 @@
+// cursor jumping to the end post bot response fix DONE
 "use client";
 import { use, useState, useEffect} from "react";
 import Image from "next/image";
@@ -145,7 +146,7 @@ export default function SessionDetail({ params }) {
                 placeholder={botTyping && "Lütfen bekleyin..." || "Cevabınızı yazın..."}
                 attachButton={false}
                 sendButton={true}
-                disabled={botTyping}
+                sendDisabled={botTyping}
               />
             </ChatContainer>
           </MainContainer>

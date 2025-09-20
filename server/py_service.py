@@ -38,16 +38,9 @@ def process():
     data = request.json
     human_message = data['message']
 
-<<<<<<< HEAD
     status, output, session_history = session.generate_message(input=str(human_message))
 
     return jsonify({'message': str(output), 'status': str(status)}) # status: <END OF CONVERSATION>, <CONTINUE>
-=======
-    # status, output, session_history = session.generate_message(input=str(human_message))
-    time.sleep(2)  # Simulate processing time
-    print(f"Processed message: {human_message} status: END")
-    return jsonify({'message': "message", 'status': "END"}) # status: <END OF CONVERSATION>, <CONTINUE>
->>>>>>> origin/dev
     # message will be bot's reply, status will indicate conversation end or continuation
 
     # print(f"Received data: {data}")

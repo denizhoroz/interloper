@@ -11,6 +11,8 @@ export default function Card({ title, description, image, onClick, children }) {
                 <Image
                     src={image}
                     alt={title}
+                    width={320} // or any appropriate value
+                    height={160} // or any appropriate value
                     className="w-full sm:w-50 md:w-80 h-40 md:h-56 object-cover rounded-lg mb-3 sm:mb-0 flex-shrink-0"
                 />
             )}

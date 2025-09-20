@@ -24,10 +24,12 @@ export const metadata = {
 
 export default function MainLayout({ children }) {
   return (
-    <>
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-[#91ADC8] via-[#647FBC] to-[#AED6CF]">
       <Header />
-      <main>{children}</main>
+      <main className="flex-grow flex flex-col items-center justify-center">
+        {children}
+      </main>
       <Footer />
-    </>
+    </div>
   );
 }

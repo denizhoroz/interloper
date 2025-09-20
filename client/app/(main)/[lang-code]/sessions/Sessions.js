@@ -15,7 +15,7 @@ export default function Sessions({ params }) {
                 <Link href={`/${langCode}/sessions/1`}>
                     <Card
                         title="Restoran Diyaloğu"
-                        description="Bir arkadaşınla restoranda geçen bir konuşma oturumu."
+                        description="Restoranda bir garsonla yemek siparişi verme pratiği yap."
                         image="/placeholder.png"
                     />
                 </Link>

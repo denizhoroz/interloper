@@ -20,7 +20,7 @@ import {
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function SessionDetail({ params }) {
-  const { "lang-code": langCode, id } = params;
+  const { "lang-code": langCode, id } = typeof params.then === "function" ? use(params) : params;
 
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);

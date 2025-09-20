@@ -1,37 +1,38 @@
 "use client";
-// these will be updated by api in the future
-const criteria = [
-	{ key: "grammar", label: "Gramer" },
-	{ key: "vocabulary", label: "Kelime Dağarcığı" },
-	{ key: "fluency", label: "Akıcılık" },
-	{ key: "clarity", label: "Açıklık" },
-];
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
-const scores = {
-	grammar: 7,
-	vocabulary: 8,
-	fluency: 6,
-	clarity: 9,
-};
-
-const critiques = {
-	grammar: "Cümle yapılarında küçük hatalar mevcut, ancak genel olarak anlaşılır.",
-	vocabulary: "Kelime seçiminiz zengin ve çeşitliydi.",
-	fluency: "Konuşma sırasında bazı duraksamalar oldu.",
-	clarity: "İletmek istediğiniz mesaj net ve anlaşılırdı.",
-};
-
-const scenario = {
-	title: "Restoran Diyaloğu",
-	description: "Bir arkadaşınla restoranda geçen bir konuşma oturumu.",
-	details: [
-		"Konuşma başlangıcı: Garson ile selamlaşma.",
-		"Yemek siparişi verme.",
-		"Fatura isteme ve ödeme.",
-	],
-};
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function EvaluationPage() {
+	const params = useParams();
+	const { id } = params;
+	const [criteria, setCriteria] = useState([]);
+	const [scores, setScores] = useState({});
+	const [critiques, setCritiques] = useState({});
+	const [scenario, setScenario] = useState({
+		title: "",
+		description: "",
+		details: [],
+	});
+
+	useEffect(() => {
+		fetch(`${API_BASE_URL}/api/sessions/${id}/evaluation`)
+			.then((res) => res.json())
+			.then((data) => {
+				setCriteria(data.criteria || []);
+				setScores(data.scores || {});
+				setCritiques(data.critiques || {});
+				setScenario(
+					data.scenario || {
+						title: "",
+						description: "",
+						details: [],
+					}
+				);
+			});
+	}, [id]);
+
 	return (
 		<div className="flex items-center justify-center p-4">
 			<div className="bg-[#FAFDD6] rounded-xl shadow-lg p-4 sm:p-8 w-full max-w-5xl flex flex-col md:flex-row gap-8 items-stretch justify-center">

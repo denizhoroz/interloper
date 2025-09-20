@@ -1,8 +1,8 @@
-// cursor jumping to the end post bot response also sometimes disappearing fix NEEDED
 "use client";
-import { use, useState, useEffect} from "react";
+import { use, useState, useEffect } from "react";
 import Image from "next/image";
-import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import Link from "next/link";
+import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {
   MainContainer,
   ChatContainer,
@@ -11,33 +11,49 @@ import {
   MessageInput,
   Avatar,
   TypingIndicator
-} from '@chatscope/chat-ui-kit-react';
+} from "@chatscope/chat-ui-kit-react";
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function SessionDetail({ params }) {
-  const { "lang-code": langCode, id } = typeof params.then === "function" ? use(params) : params;
+  const { "lang-code": langCode, id } =
+    typeof params.then === "function" ? use(params) : params;
+
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [sessionInfo, setSessionInfo] = useState(null);
   const [botTyping, setBotTyping] = useState(false);
+  const [conversationEnded, setConversationEnded] = useState(false);
+
+  // ✅ helper for safe bot message append (no duplicates)
+  const appendBotMessage = (text) => {
+    setMessages((prev) => {
+      if (prev.length > 0) {
+        const last = prev[prev.length - 1];
+        if (last.sender === "Bot" && last.message === text) {
+          return prev; // skip duplicate
+        }
+      }
+      return [
+        ...prev,
+        {
+          message: text,
+          sender: "Bot",
+          direction: "incoming",
+          position: "single",
+          avatar: <Avatar src="/avatar.png" name="Bot" size="md" />
+        }
+      ];
+    });
+  };
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/sessions/${id}`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         setSessionInfo(data);
-        // If sessionInfo.message exists, add it as a bot message at the start
         if (data && data.message) {
-          setMessages(prev => [
-            {
-              message: data.message,
-              sender: "Bot",
-              direction: "incoming",
-              position: "single",
-              avatar: <Avatar src="/avatar.png" name="Bot" size="md"/>
-            },
-            ...prev
-          ]);
+          appendBotMessage(data.message);
         }
       })
       .catch(() => setSessionInfo(null));
@@ -45,51 +61,42 @@ export default function SessionDetail({ params }) {
 
   const handleSend = async (val) => {
     if (!val.trim()) return;
-    setMessages(prev => [
+
+    setMessages((prev) => [
       ...prev,
       {
         message: val,
         sender: "User",
         direction: "outgoing",
         position: "single",
-        avatar: <Avatar src="/fris.jpg" name="User" size="md"/>
+        avatar: <Avatar src="/fris.jpg" name="User" size="md" />
       }
     ]);
+
     setInput("");
-    setBotTyping(true); // Show typing indicator
+    setBotTyping(true);
 
     const response = await fetch(`${API_BASE_URL}/api/sessions/${id}/message`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ message: val }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: val })
     });
-    setBotTyping(false); // Hide typing indicator
+
+    setBotTyping(false);
 
     if (response.ok) {
       const data = await response.json();
-      setMessages(prev => [
-        ...prev,
-        {
-          message: data.message,
-          sender: "Bot",
-          direction: "incoming",
-          position: "single",
-          avatar: <Avatar src="/avatar.png" name="Bot" size="md"/>
-        }
-      ]);
+      console.log("Bot response data:", data);
+
+      if (data.status === "END") {
+        setConversationEnded(true);
+        if (data.message) appendBotMessage(data.message);
+        return;
+      }
+
+      appendBotMessage(data.message);
     } else {
-      setMessages(prev => [
-        ...prev,
-        {
-          message: "Üzgünüm, bir hata oluştu.",
-          sender: "Bot",
-          direction: "incoming",
-          position: "single",
-          avatar: <Avatar src="/avatar.png" name="Bot" size="md"/>
-        }
-      ]);
+      appendBotMessage("Üzgünüm, bir hata oluştu.");
     }
   };
 
@@ -100,10 +107,17 @@ export default function SessionDetail({ params }) {
           {/* Decorative gradient bar */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-2 bg-gradient-to-r from-[#91ADC8] via-[#647FBC] to-[#AED6CF] rounded-b-xl shadow" />
           <div className="flex justify-center mb-2 mt-2">
-            <span className="inline-block text-3xl sm:text-5xl animate-bounce">🍽</span>
+            <span className="inline-block text-3xl sm:text-5xl animate-bounce">
+              🍽
+            </span>
           </div>
           <h1 className="text-xl sm:text-3xl md:text-6xl font-extrabold text-[#647FBC] mb-2 sm:mb-4 text-center drop-shadow-lg">
-            {langCode === "gb" ? "İngilizce" : langCode === "de" ? "Almanca" : langCode} Oturumu #{id}
+            {langCode === "gb"
+              ? "İngilizce"
+              : langCode === "de"
+              ? "Almanca"
+              : langCode}{" "}
+            Oturumu #{id}
           </h1>
           <h2 className="text-lg sm:text-2xl md:text-3xl text-[#647FBC] font-semibold mb-1 sm:mb-2">
             {id === "1"
@@ -116,40 +130,64 @@ export default function SessionDetail({ params }) {
               : "Senaryo açıklaması burada olacak."}
           </p>
         </div>
-        {/* Chat area with input inside */}
+
+        {/* Chat area */}
         <div className="flex-1 rounded-lg shadow-md overflow-hidden">
           <MainContainer>
             <ChatContainer>
               <MessageList
-                typingIndicator={botTyping ? <TypingIndicator content="Bot yazıyor..." /> : null}
+                typingIndicator={
+                  botTyping ? (
+                    <TypingIndicator content="Bot yazıyor..." />
+                  ) : null
+                }
               >
                 {messages.map((msg, index) => (
                   <Message
                     key={index}
                     model={{
                       message: msg.message,
-                      sentTime: "now",  
+                      sentTime: "now",
                       sender: msg.sender,
                       direction: msg.direction,
                       position: msg.position,
                       avatarSpacer: true
                     }}
                   >
-                    {msg.avatar && (typeof msg.avatar === 'string' ? <Avatar src={msg.avatar} name={msg.sender} /> : msg.avatar)}
+                    {msg.avatar &&
+                      (typeof msg.avatar === "string" ? (
+                        <Avatar src={msg.avatar} name={msg.sender} />
+                      ) : (
+                        msg.avatar
+                      ))}
                   </Message>
                 ))}
               </MessageList>
-              <MessageInput
-                value={input}
-                onChange={setInput}
-                onSend={handleSend}
-                placeholder={botTyping && "Lütfen bekleyin..." || "Cevabınızı yazın..."}
-                attachButton={false}
-                sendButton={true}
-                sendDisabled={botTyping}
-              />
+
+              {/* ✅ When conversation ends, hide the input */}
+              {!conversationEnded && (
+                <MessageInput
+                  value={input}
+                  onChange={setInput}
+                  onSend={handleSend}
+                  placeholder={
+                    botTyping ? "Lütfen bekleyin..." : "Cevabınızı yazın..."
+                  }
+                  attachButton={false}
+                  sendButton={true}
+                  sendDisabled={botTyping}
+                />
+              )}
             </ChatContainer>
           </MainContainer>
+          {conversationEnded && (
+            <div className="p-4 bg-green-100 text-green-800 text-center font-semibold">
+              <p>Konuşma sona erdi.</p>
+              <Link className="font-bold underline" href={`/${langCode}/sessions/${id}/evaluation`}>
+                Değerlendirmeye git
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>

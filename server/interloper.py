@@ -8,7 +8,7 @@ import json
 import re
 import ast
 
-def initialize_model(model_path, n_ctx=4096, n_gpu_layers=-1, n_batch=512, max_tokens=256, temperature=0.7):
+def initialize_model(model_path, n_ctx=2048, n_gpu_layers=-1, n_batch=512, max_tokens=256, temperature=0.7):
     llm = ChatLlamaCpp(
         model_path=model_path, 
         n_ctx=n_ctx,       

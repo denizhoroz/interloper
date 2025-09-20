@@ -53,7 +53,7 @@ export default function EvaluationPage() {
 	}
 
 	return (
-		<div className="flex items-center justify-center p-10">
+		<div className="flex items-center justify-center p-3">
 			<div className="bg-white/80 rounded-3xl shadow-2xl p-10 w-full max-w-[1600px] flex flex-col md:flex-row gap-12 items-stretch justify-center border-8 border-[#AED6CF]">
 				{/* Scenario Overview */}
 				<div className="md:w-2/5 w-full flex flex-col justify-center items-center bg-gradient-to-br from-[#E3F6F5] via-[#FAFDD6] to-[#AED6CF] rounded-2xl shadow-lg p-8 mb-8 md:mb-0 border-4 border-[#AED6CF] text-center min-h-[20rem]">

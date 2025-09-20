@@ -174,10 +174,11 @@ export default function SessionDetail({ params }) {
                 value={input}
                 onChange={setInput}
                 onSend={handleSend}
-                placeholder={botTyping ? "Lütfen bekleyin..." : "Type message here"}
+                placeholder={botTyping ? "Lütfen bekleyin..." : "Cevabınızı yazın..."}
                 attachButton={false}
                 sendButton={true}
                 sendDisabled={botTyping || conversationEnded}
+                disabled={botTyping || conversationEnded} // <-- Add this line
                 className="text-[#FAFDD6] rounded-lg px-4 py-2 w-full"
               />
             ) : (

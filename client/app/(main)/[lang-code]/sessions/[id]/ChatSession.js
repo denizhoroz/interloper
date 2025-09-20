@@ -1,3 +1,8 @@
+
+// Input box not being properly locked when prompt is generated
+// Loading box for session start
+
+
 "use client";
 import { use, useState, useEffect } from "react";
 import Image from "next/image";
@@ -88,7 +93,7 @@ export default function SessionDetail({ params }) {
       const data = await response.json();
       console.log("Bot response data:", data);
 
-      if (data.status === "END") {
+      if (data.status === "<END OF CONVERSATION>") {
         setConversationEnded(true);
         if (data.message) appendBotMessage(data.message);
         return;

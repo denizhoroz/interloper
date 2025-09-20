@@ -6,6 +6,7 @@ from langchain_core.messages import HumanMessage, AIMessage
 from langchain.chains import LLMChain
 import json
 import re
+import ast
 
 def initialize_model(model_path, n_ctx=4096, n_gpu_layers=-1, n_batch=512, max_tokens=256, temperature=0.7):
     llm = ChatLlamaCpp(
@@ -50,26 +51,26 @@ class Session:
             personality=self.session['talker']['personality']
         )
 
-        self.general_rules = SystemMessage("""
-        - Do not make lists for explaining a topic and only use plain text.
-        - Do not produce NSFW (Not Safe For Work) content, including sexual, erotic, violent, or gory descriptions.
-        - Do not produce hateful, offensive, or discriminatory content toward individuals or groups.
-        - Do not share personal, confidential, or private data.
-        - If the user requests unsafe, NSFW, or disallowed content, politely refuse and suggest a safe alternative.
-        - Keep answers clear, informative, and aligned with ethical, positive communication.
-        - Do not use the word "AI".
-        - Do not make lists for explaining a topic and only use plain text.
-        - Always answer in simple {self.language}.
-        - Do not translate answers back to English.
-        """)
+        # self.general_rules = SystemMessage("""
+        # - Do not make lists for explaining a topic and only use plain text.
+        # - Do not produce NSFW (Not Safe For Work) content, including sexual, erotic, violent, or gory descriptions.
+        # - Do not produce hateful, offensive, or discriminatory content toward individuals or groups.
+        # - Do not share personal, confidential, or private data.
+        # - If the user requests unsafe, NSFW, or disallowed content, politely refuse and suggest a safe alternative.
+        # - Keep answers clear, informative, and aligned with ethical, positive communication.
+        # - Do not use the word "AI".
+        # - Do not make lists for explaining a topic and only use plain text.
+        # - Always answer in simple {self.language}.
+        # - Do not translate answers back to English.
+        # """)
 
-        self.persona_rules = SystemMessage("""
-        - You must answer on behalf of the persona that is explicitly told to you.
-        - You are going to expect a person information and a goal. You must accomplish this goal without getting distracted.
-        - Never break format or switch into a generic assistant response.
-        - Only speak as the persona. Do NOT explain, introduce, or say "Here is my response:", "Here is a possible response:" or "Here is a revised version of the response:".
-        - Do not say the exact things you said before, do not repeat yourself.
-        """)
+        # self.persona_rules = SystemMessage("""
+        # - You must answer on behalf of the persona that is explicitly told to you.
+        # - You are going to expect a person information and a goal. You must accomplish this goal without getting distracted.
+        # - Never break format or switch into a generic assistant response.
+        # - Only speak as the persona. Do NOT explain, introduce, or say "Here is my response:", "Here is a possible response:" or "Here is a revised version of the response:".
+        # - Do not say the exact things you said before, do not repeat yourself.
+        # """)
 
         # Load chain
         self.build_chain()
@@ -86,8 +87,6 @@ class Session:
     def build_chain(self):
         prompt = ChatPromptTemplate.from_messages(
             [
-                self.general_rules,
-                self.persona_rules,
                 *self.persona_text_list,
                 MessagesPlaceholder('history'),
                 ('human', '{turn_settings}'),
@@ -131,12 +130,17 @@ class Session:
         self.i += 1
 
         result = self.clean_message(result)
-        if self.i > 2:
+        if self.i > 3:
             return ("<END OF CONVERSATION>", result, self.session_history)
         else:
             return ("<CONTINUE>", result, self.session_history)
         
     def clean_message(self, text):
+        try:
+            text = ast.literal_eval(text)
+        except (ValueError, SyntaxError):
+            pass
+
         # Remove dialogue prefix if exists
         if ':' in text:
             text = text.split(':')[-1]

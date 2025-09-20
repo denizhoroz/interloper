@@ -1,4 +1,3 @@
-
 // Input box not being properly locked when prompt is generated
 // Loading box for session start
 
@@ -29,6 +28,7 @@ export default function SessionDetail({ params }) {
   const [sessionInfo, setSessionInfo] = useState(null);
   const [botTyping, setBotTyping] = useState(false);
   const [conversationEnded, setConversationEnded] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // ✅ helper for safe bot message append (no duplicates)
   const appendBotMessage = (text) => {
@@ -53,6 +53,7 @@ export default function SessionDetail({ params }) {
   };
 
   useEffect(() => {
+    setLoading(true);
     fetch(`${API_BASE_URL}/api/sessions/${id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -61,7 +62,8 @@ export default function SessionDetail({ params }) {
           appendBotMessage(data.message);
         }
       })
-      .catch(() => setSessionInfo(null));
+      .catch(() => setSessionInfo(null))
+      .finally(() => setLoading(false));
   }, [id]);
 
   const handleSend = async (val) => {
@@ -104,6 +106,20 @@ export default function SessionDetail({ params }) {
       appendBotMessage("Üzgünüm, bir hata oluştu.");
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center bg-[#FAFDD6] rounded-xl shadow-lg p-8">
+          <span className="text-4xl mb-4 animate-bounce">🍽️</span>
+          <p className="text-2xl text-[#647FBC] font-bold mb-2">
+            Oturum yükleniyor...
+          </p>
+          <div className="w-16 h-16 border-4 border-[#647FBC] border-t-[#AED6CF] rounded-full animate-spin"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-center p-2 sm:p-4">

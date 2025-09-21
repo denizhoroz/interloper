@@ -62,25 +62,25 @@ export default function EvaluationPage() {
 
     return (
         <div className="flex items-center justify-center w-screen p-0">
-            <div className="py-10 px-0 w-screen  flex flex-col gap-12 items-stretch justify-center rounded-none">
+            <div className="w-screen flex flex-col gap-6 items-stretch justify-center">
                 {/* Scenario Overview */}
                 <div className="flex w-full justify-center">
-                    <div className="max-w-2xl w-full flex flex-col justify-center items-center bg-[#232526] rounded-2xl shadow-lg p-8 mb-8 border-4 border-[#647FBC] text-center h-auto">
-                        <div className="flex items-center justify-center gap-4 mb-4">
-                            <h2 className="text-3xl font-extrabold text-[#AED6CF] text-left drop-shadow-lg">
+                    <div className="w-full max-w-4xl flex flex-col justify-center items-center bg-[#232526] rounded-2xl shadow-lg p-6 mb-6 border-4 border-[#647FBC] text-center">
+                        <div className="flex items-center justify-center gap-4 mb-2">
+                            <h2 className="text-2xl font-extrabold text-[#AED6CF] text-left drop-shadow-lg">
                                 Senaryo Özeti
                             </h2>
                         </div>
-                        <h3 className="text-2xl font-bold text-[#AED6CF] mb-2">
+                        <h3 className="text-xl font-bold text-[#AED6CF] mb-1">
                             {scenario.title}
                         </h3>
-                        <p className="text-xl text-[#91ADC8] mb-4 italic">
+                        <p className="text-lg text-[#91ADC8] mb-2 italic">
                             {scenario.description}
                         </p>
                         {scenario.details && scenario.details.length > 0 && (
-                            <ul className="list-disc list-inside text-[#91ADC8] space-y-2 pl-2 text-center">
+                            <ul className="list-disc list-inside text-[#91ADC8] space-y-1 pl-2 text-center">
                                 {scenario.details.map((item, idx) => (
-                                    <li key={idx} className="text-xl font-medium">
+                                    <li key={idx} className="text-lg font-medium">
                                         {item}
                                     </li>
                                 ))}
@@ -90,28 +90,28 @@ export default function EvaluationPage() {
                 </div>
                 {/* Evaluation Section */}
                 <div className="w-full flex flex-col items-center justify-center text-center">
-                    <h1 className="text-3xl md:text-4xl font-bold text-[#AED6CF] mb-8 text-center drop-shadow-lg">
+                    <h1 className="text-2xl md:text-3xl font-bold text-[#AED6CF] mb-6 text-center drop-shadow-lg">
                         Senaryo Değerlendirmesi
                     </h1>
-                    <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-1 gap-10 w-full px-10">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full px-4">
                         {criteria.map((c) => (
                             <div
                                 key={c.key}
-                                className="flex flex-col justify-center bg-[#232526] rounded-2xl p-10 shadow-xl text-center w-full min-h-[12rem] gap-4 border-4 border-[#647FBC] transition-all duration-300 ease-in-out hover:scale-[1.03] hover:border-[#AED6CF]"
+                                className="flex flex-col justify-center bg-[#232526] rounded-2xl p-6 shadow-xl text-center w-full min-h-[10rem] gap-2 border-4 border-[#647FBC] transition-all duration-300 ease-in-out hover:scale-[1.03] hover:border-[#AED6CF]"
                             >
-                                <label className="text-2xl font-bold text-[#AED6CF] mb-2 tracking-wide">
+                                <label className="text-lg font-bold text-[#AED6CF] mb-1 tracking-wide">
                                     {c.label}
                                 </label>
-                                <div className="w-full h-8 bg-[#181A1B] rounded-full overflow-hidden border-2 border-[#647FBC] mb-2 flex items-center">
+                                <div className="w-full h-6 bg-[#181A1B] rounded-full overflow-hidden border-2 border-[#647FBC] mb-1 flex items-center">
                                     <div
                                         className="h-full bg-gradient-to-r from-[#91ADC8] via-[#647FBC] to-[#AED6CF] transition-all"
                                         style={{ width: `${(scores[c.key] / 10) * 100}%` }}
                                     />
                                 </div>
-                                <span className="text-xl text-[#AED6CF] mb-2 font-semibold">
+                                <span className="text-lg text-[#AED6CF] mb-1 font-semibold">
                                     Puan: {scores[c.key]}/10
                                 </span>
-                                <div className="text-xl w-full bg-[#181A1B]/80 rounded-lg p-6 border-4 border-[#647FBC] text-[#91ADC8] text-left min-h-[3rem] break-words whitespace-pre-line">
+                                <div className="text-lg w-full bg-[#181A1B]/80 rounded-lg p-4 border-4 border-[#647FBC] text-[#91ADC8] text-left min-h-[2rem] break-words whitespace-pre-line">
                                     {critiques[c.key]}
                                 </div>
                             </div>

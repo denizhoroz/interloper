@@ -69,7 +69,7 @@ body {
 
 .cs-typing-indicator {
   flex: 0 0 auto !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   align-items: center !important;
   font-style: italic !important;
   color: #647FBC !important;
@@ -84,7 +84,7 @@ body {
   white-space: nowrap !important;      /* Prevent word break */
   overflow: hidden !important;         /* Hide overflow */
   text-overflow: ellipsis !important;  /* Show ... if clipped */
-  max-width: 10% !important;          /* Limit width */
+  max-width: 15% !important;          /* Limit width */
 }
 
 

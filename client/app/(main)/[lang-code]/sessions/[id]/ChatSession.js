@@ -1,7 +1,3 @@
-// Input box not being properly locked when prompt is generated
-// Loading box for session start
-
-
 "use client";
 import { use, useState, useEffect } from "react";
 import Image from "next/image";
@@ -16,6 +12,7 @@ import {
   Avatar,
   TypingIndicator
 } from "@chatscope/chat-ui-kit-react";
+import { StarsBackground } from "@/components/ui/stars-background";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -109,9 +106,9 @@ export default function SessionDetail({ params }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center">
-        <div className="flex flex-col items-center justify-center bg-[#FAFDD6] rounded-xl shadow-lg p-8">
-          <span className="text-4xl mb-4 animate-bounce">🍽️</span>
-          <p className="text-2xl text-[#647FBC] font-bold mb-2">
+        <div className="flex flex-col items-center justify-center bg-[#232526] rounded-xl shadow-lg p-8 border-2 border-[#647FBC]">
+          <span className="text-4xl mb-4 animate-bounce text-[#AED6CF]">🍽️</span>
+          <p className="text-2xl text-[#91ADC8] font-bold mb-2">
             Oturum yükleniyor...
           </p>
           <div className="w-16 h-16 border-4 border-[#647FBC] border-t-[#AED6CF] rounded-full animate-spin"></div>
@@ -126,14 +123,14 @@ export default function SessionDetail({ params }) {
       <div className="bg-page"></div>
       {/* Main chat content */}
       <div className="relative flex flex-col items-center justify-center w-screen p-0">
-        <div className="relative z-10 w-full h-[calc(100vh-64px)] sm:w-[70vw] sm:h-[80vh] flex flex-col rounded-2xl shadow-xl overflow-hidden bg-[#FAFDD6] border-5 border-[#647FBC]">
+        <div className="relative z-10 w-full h-[calc(100vh-64px)] sm:w-[70vw] sm:h-[80vh] flex flex-col rounded-2xl shadow-xl overflow-hidden bg-gradient-to-br from-[#232526] via-[#181A1B] to-[#1a2540] border-5 border-[#647FBC]">
           {/* Scenario info message OUTSIDE scrollable area */}
           <div className="w-full flex justify-center pt-4 mb-2 px-4">
-            <div className="flex flex-col items-center bg-[#647FBC]/10 text-[#647FBC] px-6 py-2 rounded-xl text-lg font-semibold italic shadow-none pointer-events-none select-none">
+            <div className="flex flex-col items-center bg-[#647FBC]/10 text-[#AED6CF] px-6 py-2 rounded-xl text-lg font-semibold italic shadow-none pointer-events-none select-none border border-[#647FBC]">
               {sessionInfo?.title
                 ? `Senaryo: ${sessionInfo.title}`
                 : "Senaryo 1: Restoran"}
-              <span className="text-[#647FBC] font-bold">Restoranda bir garsonla yemek siparişi verme pratiği yap.</span>
+              <span className="text-[#91ADC8] font-bold">Restoranda bir garsonla yemek siparişi verme pratiği yap.</span>
             </div>
           </div>
           {/* Chat messages area (only this is scrollable) */}
@@ -178,14 +175,14 @@ export default function SessionDetail({ params }) {
                 attachButton={false}
                 sendButton={true}
                 sendDisabled={botTyping || conversationEnded}
-                disabled={botTyping || conversationEnded} // <-- Add this line
-                className="text-[#FAFDD6] rounded-lg px-4 py-2 w-full"
+                disabled={botTyping || conversationEnded}
+                className="text-[#E3F6F5] rounded-lg px-4 py-2 w-full bg-[#232526]/80 border-2 border-[#647FBC] placeholder-[#91ADC8]"
               />
             ) : (
-              <div className="text-lg p-4 bg-blue-400 text-white text-center font-semibold rounded-lg">
+              <div className="text-lg p-4 bg-gradient-to-r from-[#647FBC] via-[#91ADC8] to-[#AED6CF] text-[#232526] text-center font-semibold rounded-lg border-2 border-[#647FBC]">
                 <p>Konuşma sona erdi.</p>
                 <Link
-                  className="font-bold underline"
+                  className="font-bold underline text-[#AED6CF] hover:text-[#91ADC8] transition-colors duration-300"
                   href={`/${langCode}/sessions/${id}/evaluation`}
                 >
                   Değerlendirmeye git
@@ -195,6 +192,7 @@ export default function SessionDetail({ params }) {
           </div>
         </div>
       </div>
+      <StarsBackground starDensity={0.0002} />
     </>
   );
 }

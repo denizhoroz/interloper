@@ -52,27 +52,6 @@ class Session:
             personality=self.session['talker']['personality']
         )
 
-        # self.general_rules = SystemMessage("""
-        # - Do not make lists for explaining a topic and only use plain text.
-        # - Do not produce NSFW (Not Safe For Work) content, including sexual, erotic, violent, or gory descriptions.
-        # - Do not produce hateful, offensive, or discriminatory content toward individuals or groups.
-        # - Do not share personal, confidential, or private data.
-        # - If the user requests unsafe, NSFW, or disallowed content, politely refuse and suggest a safe alternative.
-        # - Keep answers clear, informative, and aligned with ethical, positive communication.
-        # - Do not use the word "AI".
-        # - Do not make lists for explaining a topic and only use plain text.
-        # - Always answer in simple {self.language}.
-        # - Do not translate answers back to English.
-        # """)
-
-        # self.persona_rules = SystemMessage("""
-        # - You must answer on behalf of the persona that is explicitly told to you.
-        # - You are going to expect a person information and a goal. You must accomplish this goal without getting distracted.
-        # - Never break format or switch into a generic assistant response.
-        # - Only speak as the persona. Do NOT explain, introduce, or say "Here is my response:", "Here is a possible response:" or "Here is a revised version of the response:".
-        # - Do not say the exact things you said before, do not repeat yourself.
-        # """)
-
         # Load chain
         self.build_chain()
 
@@ -239,12 +218,37 @@ class Evaluator:
             }
         return evaluation
     
+
+class Translator:
+    def __init__(self, model):
+        self.model = model
+
     def parse_history(self, session_history):
         conversation_text = "\n".join([
             f"{m.type.upper()}: {m.content}" for m in session_history[1:]
         ])
-        
+
         return conversation_text
 
-    def translate(self, session_history):
-        pass
+    def translate(self, text, lang_to="TR"):
+        '''
+        Translates the session history to target language.
+
+        Params:
+            text - Text to be translated.
+            lang_to - Translated language.
+        Returns:
+            result (str) - Translated text.
+        '''
+
+        result = self.model.translate_text(
+            text=text, 
+            target_lang=lang_to).text
+        
+        return result
+    
+    def translate_evaluation(self, eval_results):
+        for key, value in eval_results.items():
+            eval_results[key]['comment'] = self.translate(text=eval_results[key]['comment'])
+
+        return eval_results

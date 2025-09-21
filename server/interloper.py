@@ -206,6 +206,11 @@ class Evaluator:
         return text
     
     def parse_result(self, result: str):
+        # cut off everything starting from 'Overall'
+        cutoff = result.find("Overall")
+        if cutoff != -1:
+            result = result[:cutoff]
+
         pattern = r"(Grammar|Vocabulary|Fluency|Clarity):\s*([\d\.]+)/10\s*(.*?)(?=(Grammar|Vocabulary|Fluency|Clarity|$))"
         matches = re.findall(pattern, result, flags=re.DOTALL)
 

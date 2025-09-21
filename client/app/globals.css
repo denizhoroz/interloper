@@ -77,11 +77,11 @@ body {
   border-radius: 0.5rem !important;
   box-shadow: 0 2px 8px rgba(100, 127, 188, 0.08);
   border: none !important;
-  max-width: 10% !important;
   text-align: center;
   white-space: nowrap !important;      /* Prevent word break */
   overflow: hidden !important;         /* Hide overflow */
   text-overflow: ellipsis !important;  /* Show ... if clipped */
+  min-width: 120px !important;
 }
 
 

@@ -61,41 +61,43 @@ export default function EvaluationPage() {
     }
 
     return (
-        <div className="flex items-center justify-center w-screen p-10">
-            <div className="bg-[#181A1B] rounded-3xl shadow-2xl py-10 px-4 w-full max-w-[1200px] flex flex-col gap-12 items-stretch justify-center border-8 border-[#647FBC]">
+        <div className="flex items-center justify-center w-screen p-0">
+            <div className="py-10 px-0 w-screen  flex flex-col gap-12 items-stretch justify-center rounded-none">
                 {/* Scenario Overview */}
-                <div className="w-full flex flex-col justify-center items-center bg-[#232526] rounded-2xl shadow-lg p-8 mb-8 border-4 border-[#647FBC] text-center min-h-[20rem]">
-                    <div className="flex items-center justify-center gap-4 mb-4">
-                        <h2 className="text-3xl font-extrabold text-[#AED6CF] text-left drop-shadow-lg">
-                            Senaryo Özeti
-                        </h2>
+                <div className="flex w-full justify-center">
+                    <div className="max-w-2xl w-full flex flex-col justify-center items-center bg-[#232526] rounded-2xl shadow-lg p-8 mb-8 border-4 border-[#647FBC] text-center h-auto">
+                        <div className="flex items-center justify-center gap-4 mb-4">
+                            <h2 className="text-3xl font-extrabold text-[#AED6CF] text-left drop-shadow-lg">
+                                Senaryo Özeti
+                            </h2>
+                        </div>
+                        <h3 className="text-2xl font-bold text-[#AED6CF] mb-2">
+                            {scenario.title}
+                        </h3>
+                        <p className="text-xl text-[#91ADC8] mb-4 italic">
+                            {scenario.description}
+                        </p>
+                        {scenario.details && scenario.details.length > 0 && (
+                            <ul className="list-disc list-inside text-[#91ADC8] space-y-2 pl-2 text-center">
+                                {scenario.details.map((item, idx) => (
+                                    <li key={idx} className="text-xl font-medium">
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </div>
-                    <h3 className="text-2xl font-bold text-[#AED6CF] mb-2">
-                        {scenario.title}
-                    </h3>
-                    <p className="text-xl text-[#91ADC8] mb-4 italic">
-                        {scenario.description}
-                    </p>
-                    {scenario.details && scenario.details.length > 0 && (
-                        <ul className="list-disc list-inside text-[#91ADC8] space-y-2 pl-2 text-center">
-                            {scenario.details.map((item, idx) => (
-                                <li key={idx} className="text-xl font-medium">
-                                    {item}
-                                </li>
-                            ))}
-                        </ul>
-                    )}
                 </div>
                 {/* Evaluation Section */}
                 <div className="w-full flex flex-col items-center justify-center text-center">
                     <h1 className="text-3xl md:text-4xl font-bold text-[#AED6CF] mb-8 text-center drop-shadow-lg">
                         Senaryo Değerlendirmesi
                     </h1>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full">
+                    <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-1 gap-10 w-full px-10">
                         {criteria.map((c) => (
                             <div
                                 key={c.key}
-                                className="flex flex-col items-center justify-center bg-[#232526] rounded-2xl p-10 shadow-xl text-center w-full min-h-[12rem] gap-4 border-4 border-[#647FBC] transition-all duration-300 ease-in-out hover:scale-[1.03] hover:border-[#AED6CF]"
+                                className="flex flex-col justify-center bg-[#232526] rounded-2xl p-10 shadow-xl text-center w-full min-h-[12rem] gap-4 border-4 border-[#647FBC] transition-all duration-300 ease-in-out hover:scale-[1.03] hover:border-[#AED6CF]"
                             >
                                 <label className="text-2xl font-bold text-[#AED6CF] mb-2 tracking-wide">
                                     {c.label}

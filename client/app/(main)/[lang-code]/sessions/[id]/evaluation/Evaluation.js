@@ -22,19 +22,25 @@ export default function EvaluationPage() {
 
     useEffect(() => {
         setLoading(true);
+
+        // Fetch scenario info from sessions.json via API
+        fetch(`${API_BASE_URL}/api/sessions/${id}`)
+            .then((res) => res.json())
+            .then((data) => {
+                setScenario({
+                    title: data.title || "",
+                    description: data.description || "",
+                    details: data.details || [],
+                });
+            });
+
+        // Fetch evaluation info
         fetch(`${API_BASE_URL}/api/sessions/${id}/evaluation`)
             .then((res) => res.json())
             .then((data) => {
                 setCriteria(data.criteria || []);
                 setScores(data.scores || {});
                 setCritiques(data.critiques || {});
-                setScenario(
-                    data.scenario || {
-                        title: "",
-                        description: "",
-                        details: [],
-                    }
-                );
             })
             .finally(() => setLoading(false));
     }, [id]);
@@ -49,7 +55,7 @@ export default function EvaluationPage() {
                     </p>
                     <div className="w-16 h-16 border-4 border-[#647FBC] border-t-[#AED6CF] rounded-full animate-spin"></div>
                 </div>
-				<StarsBackground starDensity={0.0003} />
+                <StarsBackground starDensity={0.0003} />
             </div>
         );
     }
@@ -70,6 +76,15 @@ export default function EvaluationPage() {
                     <p className="text-xl text-[#91ADC8] mb-4 italic">
                         {scenario.description}
                     </p>
+                    {scenario.details && scenario.details.length > 0 && (
+                        <ul className="list-disc list-inside text-[#91ADC8] space-y-2 pl-2 text-center">
+                            {scenario.details.map((item, idx) => (
+                                <li key={idx} className="text-xl font-medium">
+                                    {item}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                 </div>
                 {/* Evaluation Section */}
                 <div className="w-full flex flex-col items-center justify-center text-center">

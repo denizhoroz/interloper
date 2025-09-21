@@ -26,16 +26,16 @@ body {
 
 /* Change font size of message text */
 .cs-message__content {
-  font-size: 1.2rem !important;
-  padding: 0.8rem 1rem !important;
+  font-size: 0.85rem !important;      /* Smaller text */
+  padding: 0.5rem 0.7rem !important;  /* Less padding */
 }
 
 /* Style the input box border, padding */
 .cs-message-input {
-  padding: 1rem !important;
+  padding: 0.7rem !important;
   border: 2px solid #647FBC !important;
   border-radius: 0.5rem !important;
-  font-size: larger !important;
+  font-size: 1rem !important;
 }
 
 /* Style send button */
@@ -45,8 +45,8 @@ body {
 }
 
 .cs-message {
-  margin-bottom: 1.2rem !important;
-  max-width: 75% !important;
+  margin-bottom: 0.8rem !important;
+  max-width: 60% !important;          /* Narrower bubbles */
   /* Limit message bubble width */
   word-wrap: break-word !important;
   /* Increase this value for more space */
@@ -55,12 +55,12 @@ body {
 .cs-message-list {
   scrollbar-width: thin !important;
   scrollbar-color: #647FBC transparent !important;
-  padding: 1rem !important;
+  padding: 0.5rem !important;
   background-color: transparent !important;
 }
 
 .bg-chat {
-  background-image: url('/pizza_parlor.jpg') !important;
+  background-image: url('/bg1.png') !important;
   /* Replace with your image path */
   background-size: cover;
   background-position: center;
@@ -71,30 +71,19 @@ body {
   font-style: italic !important;
   color: #647FBC !important;
   margin-left: 1rem !important;
-  font-size: 1.3rem !important;
+  font-size: 1rem !important;
   background-color: white !important;
-  padding: 0.5rem 1rem !important;
+  padding: 0.3rem 0.7rem !important;
   border-radius: 0.5rem !important;
   box-shadow: 0 2px 8px rgba(100, 127, 188, 0.08);
   border: none !important;
-  max-width: 12% !important;
+  max-width: 10% !important;
   text-align: center;
   white-space: nowrap !important;      /* Prevent word break */
   overflow: hidden !important;         /* Hide overflow */
   text-overflow: ellipsis !important;  /* Show ... if clipped */
 }
 
-.bg-page {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-  background-image: url('/pizza_parlor.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
 
 .cs-message__avatar {
   margin-right: 32px !important;
@@ -103,3 +92,4 @@ body {
 .cs-message--outgoing .cs-message__avatar {
   margin-right: 32px !important;
 }
+

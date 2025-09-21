@@ -72,7 +72,7 @@ export default function SessionDetail({ params }) {
         sender: "User",
         direction: "outgoing",
         position: "single",
-        avatar: <Avatar src="/fris.jpg" name="User" size="lg" />
+        avatar: <Avatar src="/user.png" name="User" size="lg" />
       }
     ]);
 
@@ -123,8 +123,8 @@ export default function SessionDetail({ params }) {
       {/* Background image fills viewport */}
       <div className="bg-page"></div>
       {/* Main chat content */}
-      <div className="relative flex flex-col items-center justify-center w-screen p-0">
-        <div className="relative z-10 w-full h-[calc(100vh-64px)] sm:w-[70vw] sm:h-[80vh] flex flex-col rounded-2xl shadow-xl overflow-hidden bg-gradient-to-br from-[#232526] via-[#181A1B] to-[#1a2540] border-5 border-[#647FBC]">
+      <div className="relative flex flex-col items-center justify-center p-0">
+        <div className="relative z-10 w-full h-[calc(100vh-64px)] sm:w-[50vw] sm:h-[70vh] flex flex-col rounded-2xl shadow-xl overflow-hidden bg-gradient-to-br from-[#232526] via-[#181A1B] to-[#1a2540] border-5 border-[#647FBC]">
           {/* Scenario info message OUTSIDE scrollable area */}
           <div className="w-full flex justify-center pt-4 mb-2 px-4">
             <div className="flex flex-col items-center bg-[#647FBC]/10 text-[#AED6CF] px-6 py-2 rounded-xl text-lg font-semibold italic shadow-none pointer-events-none select-none border border-[#647FBC]">

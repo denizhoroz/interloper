@@ -43,6 +43,7 @@ class Session:
         self.session_history = []
         self.human_input = ''
         self.i = 0
+        self.turns = self.session['turns']
 
         # Add personality
         self.add_persona(
@@ -80,7 +81,8 @@ class Session:
         You are {name}, your role is {role}.
         Stay strictly in character.
         Your personality is {personality}.
-        Only speak as {name}. Do not explain, introduce, or say "here is my response."
+        ONLY speak as {name}. Do not explain, introduce, or say "here is my response."
+        ONLY follow the specific step given. 
         """
         self.persona_text_list.append(SystemMessage(persona_text))
 
@@ -88,8 +90,8 @@ class Session:
         prompt = ChatPromptTemplate.from_messages(
             [
                 *self.persona_text_list,
-                MessagesPlaceholder('history'),
                 ('human', '{turn_settings}'),
+                MessagesPlaceholder('history'),
                 ('human', '{user_input}')
             ]
         )
@@ -124,22 +126,29 @@ class Session:
         # Update history
         self.session_history.append(HumanMessage(self.clean_message(input)))
         self.session_history.append(AIMessage(self.clean_message(result)))
-
+        
         if "<REPEAT>" in result: 
             self.i -= 1
         self.i += 1
 
         result = self.clean_message(result)
-        if self.i > 3:
+        if self.i > self.turns:
             return ("<END OF CONVERSATION>", result, self.session_history)
         else:
             return ("<CONTINUE>", result, self.session_history)
         
     def clean_message(self, text):
+        # Parse literal text
         try:
             text = ast.literal_eval(text)
         except (ValueError, SyntaxError):
             pass
+
+        # Remove redundant surrounding quotes (single or double)
+        if (len(text) >= 2) and (
+            (text[0] == text[-1]) and text[0] in ["'", '"']
+        ):
+            text = text[1:-1].strip()
 
         # Remove dialogue prefix if exists
         if ':' in text:
@@ -173,13 +182,14 @@ class Evaluator:
         Returns:
             evaluation_results (str) - Evaluation results
         '''
+
         evaluation_prompt = ChatPromptTemplate.from_messages([
             ("system", "You are a strict language proficiency evaluator. "
-                    "Evaluate the HUMAN's language proficiency in the conversation. "
-                    "Always focus on grammar, vocabulary, fluency, and clarity. "
-                    "Give a score from 1–10, and short feedback (2–3 sentences)."
-                    "Always use this format when formatting: Grammar: 4.5/10 or Fluency: 8.5/10 for example."),
-            ("human", "Conversation:\n{conversation}\n\nNow give your evaluation:")
+            "Evaluate the HUMAN's language proficiency in the conversation. "
+            "Always focus on grammar, vocabulary, fluency, and clarity. " 
+            "Give a score from 1–10, and short feedback (2–3 sentences)." 
+            "Always use this format when formatting: Grammar: 4.5/10 or Fluency: 8.5/10 for example."), 
+            ("human", "Conversation:\n{conversation}\n\nNow give your evaluation:") 
         ])
 
         evaluation_chain = LLMChain(
@@ -192,17 +202,30 @@ class Evaluator:
         evaluation_results = evaluation_chain.invoke({"conversation": conversation_text})['text']
         evaluation_results = self.parse_result(evaluation_results)
 
+        for section, data in evaluation_results.items():
+            if 'comment' in data and isinstance(data['comment'], str):
+                data['comment'] = self.clean_evaluation(data['comment'])
+
         return evaluation_results
+    
+    def clean_evaluation(text):
+        # remove surrounding ** markers if they exist
+        if text.startswith("**") and text.endswith("**"):
+            text = text[2:-2]
 
-    def translate(self, session_history):
-        pass
+        # remove any stray asterisks inside
+        text = text.replace("**", "")
 
-    def parse_history(self, session_history):
-        conversation_text = "\n".join([
-            f"{m.type.upper()}: {m.content}" for m in session_history[1:]
-        ])
-        
-        return conversation_text
+        # replace line breaks with spaces
+        text = text.replace("\n", " ")
+
+        # normalize multiple spaces to single
+        text = " ".join(text.split())
+
+        # strip leading/trailing whitespace
+        text = text.strip()
+
+        return text
     
     def parse_result(self, result: str):
         pattern = r"(Grammar|Vocabulary|Fluency|Clarity):\s*([\d\.]+)/10\s*(.*?)(?=(Grammar|Vocabulary|Fluency|Clarity|$))"
@@ -215,3 +238,13 @@ class Evaluator:
                 "comment": comment.strip()
             }
         return evaluation
+    
+    def parse_history(self, session_history):
+        conversation_text = "\n".join([
+            f"{m.type.upper()}: {m.content}" for m in session_history[1:]
+        ])
+        
+        return conversation_text
+
+    def translate(self, session_history):
+        pass

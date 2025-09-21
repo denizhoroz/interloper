@@ -113,6 +113,7 @@ export default function SessionDetail({ params }) {
           </p>
           <div className="w-16 h-16 border-4 border-[#647FBC] border-t-[#AED6CF] rounded-full animate-spin"></div>
         </div>
+        <StarsBackground starDensity={0.0002} />
       </div>
     );
   }
@@ -182,7 +183,7 @@ export default function SessionDetail({ params }) {
               <div className="text-lg p-4 bg-gradient-to-r from-[#647FBC] via-[#91ADC8] to-[#AED6CF] text-[#232526] text-center font-semibold rounded-lg border-2 border-[#647FBC]">
                 <p>Konuşma sona erdi.</p>
                 <Link
-                  className="font-bold underline text-[#AED6CF] hover:text-[#91ADC8] transition-colors duration-300"
+                  className="font-bold underline text-black hover:text-white transition-colors duration-300"
                   href={`/${langCode}/sessions/${id}/evaluation`}
                 >
                   Değerlendirmeye git

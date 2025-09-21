@@ -49,17 +49,17 @@ export default function EvaluationPage() {
                     </p>
                     <div className="w-16 h-16 border-4 border-[#647FBC] border-t-[#AED6CF] rounded-full animate-spin"></div>
                 </div>
+				<StarsBackground starDensity={0.0003} />
             </div>
         );
     }
 
     return (
-        <div className="flex items-center justify-center p-3">
-            <div className="bg-[#181A1B] rounded-3xl shadow-2xl p-10 w-full max-w-[1600px] flex flex-col md:flex-row gap-12 items-stretch justify-center border-8 border-[#647FBC]">
+        <div className="flex items-center justify-center w-screen p-10">
+            <div className="bg-[#181A1B] rounded-3xl shadow-2xl py-10 px-4 w-full max-w-[1200px] flex flex-col gap-12 items-stretch justify-center border-8 border-[#647FBC]">
                 {/* Scenario Overview */}
-                <div className="md:w-2/5 w-full flex flex-col justify-center items-center bg-[#232526] rounded-2xl shadow-lg p-8 mb-8 md:mb-0 border-4 border-[#647FBC] text-center min-h-[20rem]">
+                <div className="w-full flex flex-col justify-center items-center bg-[#232526] rounded-2xl shadow-lg p-8 mb-8 border-4 border-[#647FBC] text-center min-h-[20rem]">
                     <div className="flex items-center justify-center gap-4 mb-4">
-                        <span className="text-5xl text-[#AED6CF]">🍽️</span>
                         <h2 className="text-3xl font-extrabold text-[#AED6CF] text-left drop-shadow-lg">
                             Senaryo Özeti
                         </h2>
@@ -70,24 +70,17 @@ export default function EvaluationPage() {
                     <p className="text-xl text-[#91ADC8] mb-4 italic">
                         {scenario.description}
                     </p>
-                    <ul className="list-disc list-inside text-[#91ADC8] space-y-2 pl-2 text-center">
-                        {scenario.details.map((item, idx) => (
-                            <li key={idx} className="text-xl font-medium">
-                                {item}
-                            </li>
-                        ))}
-                    </ul>
                 </div>
                 {/* Evaluation Section */}
-                <div className="md:w-3/5 w-full flex flex-col items-center justify-center text-center">
+                <div className="w-full flex flex-col items-center justify-center text-center">
                     <h1 className="text-3xl md:text-4xl font-bold text-[#AED6CF] mb-8 text-center drop-shadow-lg">
                         Senaryo Değerlendirmesi
                     </h1>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full justify-items-stretch">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full">
                         {criteria.map((c) => (
                             <div
                                 key={c.key}
-                                className="flex flex-col items-center justify-center bg-[#232526] rounded-2xl p-8 shadow-xl text-center w-full max-w-xl min-h-[10rem] gap-4 border-4 border-[#647FBC] transition-all duration-300 ease-in-out hover:scale-[1.03] hover:border-[#AED6CF]"
+                                className="flex flex-col items-center justify-center bg-[#232526] rounded-2xl p-10 shadow-xl text-center w-full min-h-[12rem] gap-4 border-4 border-[#647FBC] transition-all duration-300 ease-in-out hover:scale-[1.03] hover:border-[#AED6CF]"
                             >
                                 <label className="text-2xl font-bold text-[#AED6CF] mb-2 tracking-wide">
                                     {c.label}
@@ -101,7 +94,7 @@ export default function EvaluationPage() {
                                 <span className="text-xl text-[#AED6CF] mb-2 font-semibold">
                                     Puan: {scores[c.key]}/10
                                 </span>
-                                <div className="text-xl w-full bg-[#181A1B]/80 rounded-lg p-6 border-4 border-[#647FBC] text-[#91ADC8] text-left min-h-[3rem] max-h-[8rem] break-words whitespace-pre-line overflow-y-auto">
+                                <div className="text-xl w-full bg-[#181A1B]/80 rounded-lg p-6 border-4 border-[#647FBC] text-[#91ADC8] text-left min-h-[3rem] break-words whitespace-pre-line">
                                     {critiques[c.key]}
                                 </div>
                             </div>
@@ -109,7 +102,7 @@ export default function EvaluationPage() {
                     </div>
                 </div>
             </div>
-			<StarsBackground starDensity={0.00025} />
+            <StarsBackground starDensity={0.00025} />
         </div>
     );
 }

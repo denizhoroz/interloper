@@ -145,7 +145,6 @@ class Session:
         text = text.strip()
 
         return text
-    
 
 class Evaluator:
     def __init__(self, model):
@@ -217,11 +216,6 @@ class Evaluator:
                 "comment": comment.strip()
             }
         return evaluation
-    
-
-class Translator:
-    def __init__(self, model):
-        self.model = model
 
     def parse_history(self, session_history):
         conversation_text = "\n".join([
@@ -229,6 +223,10 @@ class Translator:
         ])
 
         return conversation_text
+
+class Translator:
+    def __init__(self, model):
+        self.model = model
 
     def translate(self, text, lang_to="TR"):
         '''

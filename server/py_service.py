@@ -2,7 +2,7 @@
 import time
 import json
 from flask import Flask, request, jsonify
-# from interloper import initialize_model, Session, Evaluator  # <-- commented out
+from interloper import initialize_model, Session, Evaluator
 app = Flask(__name__)
 
 # Initialize values
@@ -20,18 +20,28 @@ def home():
 # When the session is clicked
 @app.route('/session/<id>', methods=['GET'])
 def get_session(id):
+    global llm, session
+    
+    # Generate first message
+    llm = initialize_model(model_path="../models/llama-3-8b-instruct_Q4_K_M.gguf")
+    session = Session(model=llm, session_n=int(id))
+
+    _, output, _ = session.generate_message() # Generate first message
+
+    # Fetch json data
     with open("sessions.json", "r", encoding="utf-8") as f:
         sessions_data = json.load(f)
-    session = next((s for s in sessions_data["sessions"] if str(s["session_n"]) == str(id)), None)
-    if session:
+    session_info = next((s for s in sessions_data["sessions"] if str(s["session_n"]) == str(id)), None)
+    if session_info:
         return jsonify({
-            "title": session.get("title", ""),
-            "description": session.get("description", ""),
-            "prompts": session.get("prompts", []),
-            "turns": session.get("turns", 0),
-            "talker": session.get("talker", {}),
-            "message": f"{session.get('description', '')}"
+            "title": session_info.get("title", ""),
+            "description": session_info.get("description", ""),
+            "prompts": session_info.get("prompts", []),
+            "turns": session_info.get("turns", 0),
+            "talker": session_info.get("talker", {}),
+            "message": str(output)
         })
+    
     return jsonify({"error": "Session not found"}), 404
 
 # When a message is sent
@@ -41,34 +51,32 @@ def process():
     data = request.json
     human_message = data['message']
 
-    # status, output, session_history = session.generate_message(input=str(human_message))  # <-- commented out
+    status, output, session_history = session.generate_message(input=str(human_message))
 
-    # Placeholder logic for testing
-    if human_message.lower() == "end":
-        status = "<END OF CONVERSATION>"
-        output = "Conversation ended. Thank you!"
-    else:
-        status = "<CONTINUE>"
-        output = f"Bot reply to: {human_message}"
+    # # Placeholder logic for testing
+    # if human_message.lower() == "end":
+    #     status = "<END OF CONVERSATION>"
+    #     output = "Conversation ended. Thank you!"
+    # else:
+    #     status = "<CONTINUE>"
+    #     output = f"Bot reply to: {human_message}"
 
-    session_history = "placeholder history"
+    # session_history = "placeholder history"
 
     return jsonify({'message': str(output), 'status': str(status)})
 
 @app.route('/session/<id>/evaluation', methods=['GET'])
 def evaluate(id):
-    print('evaluation clicked')
-    
-    # evaluator = Evaluator(model=llm)  # <-- commented out
-    # results = evaluator.evaluate(session_history)  # <-- commented out
+    evaluator = Evaluator(model=llm)  
+    results = evaluator.evaluate(session_history)  
 
     # Dummy placeholder results for testing
-    results = {
-        "Grammar": {"score": 7, "comment": "Bazı küçük dilbilgisi hataları vardı."},
-        "Vocabulary": {"score": 8, "comment": "Kelime seçimin iyiydi, daha fazla çeşitlilik ekleyebilirsin."},
-        "Fluency": {"score": 6, "comment": "Akıcılık fena değil, bazen duraksadın."},
-        "Clarity": {"score": 9, "comment": "Mesajların çok net ve anlaşılırdı."}
-    }
+    # results = {
+    #     "Grammar": {"score": 7, "comment": "Bazı küçük dilbilgisi hataları vardı."},
+    #     "Vocabulary": {"score": 8, "comment": "Kelime seçimin iyiydi, daha fazla çeşitlilik ekleyebilirsin."},
+    #     "Fluency": {"score": 6, "comment": "Akıcılık fena değil, bazen duraksadın."},
+    #     "Clarity": {"score": 9, "comment": "Mesajların çok net ve anlaşılırdı."}
+    # }
 
     return jsonify({
         "criteria": [
@@ -88,17 +96,7 @@ def evaluate(id):
             "Vocabulary": results['Vocabulary']['comment'],
             "Fluency": results['Fluency']['comment'],
             "Clarity": results['Clarity']['comment']
-        },
-        "scenario": {
-            "title": "Restoran",
-            "description": "Bir restoranda geçen konuşma senaryosu.",
-            "details": [
-                "Garson ile sipariş verme",
-                "Arkadaş ile sohbet",
-                "Hesap isteme"
-            ]
-        }
-    })
+        }})
 
 if __name__ == '__main__':
     app.run(port=8000)

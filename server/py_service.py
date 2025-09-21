@@ -1,13 +1,20 @@
 # python_service.py
-import time
 import json
 from flask import Flask, request, jsonify
-from interloper import initialize_model, Session, Evaluator
+from interloper import initialize_model, Session, Evaluator, Translator
+import os
+import deepl
+from dotenv import load_dotenv
+load_dotenv()
 app = Flask(__name__)
 
 # Initialize values
 session = None
 session_history = None
+
+# Initialize deepl
+model = deepl.Translator(os.getenv("DEEPL_API_KEY"))
+translator = Translator(model)
 
 with open("sessions.json", "r", encoding="utf-8") as f:
     session_info = json.load(f)
@@ -69,6 +76,7 @@ def process():
 def evaluate(id):
     evaluator = Evaluator(model=llm)  
     results = evaluator.evaluate(session_history)  
+    results = translator.translate_evaluation(eval_results=results)
 
     # Dummy placeholder results for testing
     # results = {

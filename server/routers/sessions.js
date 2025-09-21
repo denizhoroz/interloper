@@ -1,9 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
 
-// Example route to get session details
 const PY_SERVICE_URL = process.env.PYTHON_SERVICE_URL;
+
+// Serve all sessions from sessions.json
+router.get("/", (req, res) => {
+  const sessionsPath = path.join(__dirname, '../../server/sessions.json');
+  fs.readFile(sessionsPath, 'utf-8', (err, data) => {
+    if (err) {
+      console.error("Error reading sessions.json:", err);
+      return res.status(500).json({ error: "Could not read sessions.json" });
+    }
+    try {
+      const sessionsData = JSON.parse(data);
+      res.json({ sessions: sessionsData.sessions || [] });
+    } catch (parseErr) {
+      console.error("Error parsing sessions.json:", parseErr);
+      res.status(500).json({ error: "Invalid sessions.json format" });
+    }
+  });
+});
 
 router.get("/:id", async (req, res) => {
   const { id } = req.params;

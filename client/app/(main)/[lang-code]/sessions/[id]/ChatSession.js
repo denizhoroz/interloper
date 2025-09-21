@@ -130,8 +130,8 @@ export default function SessionDetail({ params }) {
             <div className="flex flex-col items-center bg-[#647FBC]/10 text-[#AED6CF] px-6 py-2 rounded-xl text-lg font-semibold italic shadow-none pointer-events-none select-none border border-[#647FBC]">
               {sessionInfo?.title
                 ? `Senaryo: ${sessionInfo.title}`
-                : "Senaryo 1: Restoran"}
-              <span className="text-[#91ADC8] font-bold">Restoranda bir garsonla yemek siparişi verme pratiği yap.</span>
+                : "Senaryo bilgisi yüklenemedi."}
+              <span className="text-[#91ADC8] font-bold">{sessionInfo?.description || "Açıklama yok."}</span>
             </div>
           </div>
           {/* Chat messages area (only this is scrollable) */}

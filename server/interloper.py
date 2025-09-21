@@ -208,7 +208,7 @@ class Evaluator:
 
         return evaluation_results
     
-    def clean_evaluation(text):
+    def clean_evaluation(self, text):
         # remove surrounding ** markers if they exist
         if text.startswith("**") and text.endswith("**"):
             text = text[2:-2]

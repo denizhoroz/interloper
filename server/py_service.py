@@ -28,8 +28,8 @@ def home():
 @app.route('/session/<id>', methods=['GET'])
 def get_session(id):
     global llm, session
-    
-    # Generate first message
+
+    # Initializes model and session
     llm = initialize_model(model_path="../models/llama-3-8b-instruct_Q4_K_M.gguf")
     session = Session(model=llm, session_n=int(id))
 
@@ -60,7 +60,7 @@ def process():
 
     status, output, session_history = session.generate_message(input=str(human_message))
 
-    # # Placeholder logic for testing
+    # # Placeholder logic for testing without model
     # if human_message.lower() == "end":
     #     status = "<END OF CONVERSATION>"
     #     output = "Conversation ended. Thank you!"
@@ -78,7 +78,7 @@ def evaluate(id):
     results = evaluator.evaluate(session_history)  
     results = translator.translate_evaluation(eval_results=results)
 
-    # Dummy placeholder results for testing
+    # Dummy placeholder results for testing without model
     # results = {
     #     "Grammar": {"score": 7, "comment": "Bazı küçük dilbilgisi hataları vardı."},
     #     "Vocabulary": {"score": 8, "comment": "Kelime seçimin iyiydi, daha fazla çeşitlilik ekleyebilirsin."},

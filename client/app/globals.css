@@ -10,7 +10,6 @@ body {
 /* Override bot vs user bubble colors */
 .cs-message.cs-message--incoming .cs-message__content {
   background-color: #6fe077 !important;
-  /* Soft pale blue */
   color: black !important;
   box-shadow: 0 2px 8px rgba(100, 127, 188, 0.08);
   border: none !important;
@@ -18,7 +17,6 @@ body {
 
 .cs-message.cs-message--outgoing .cs-message__content {
   background-color: #208fc2 !important;
-  /* Vibrant teal */
   color: #fff !important;
   box-shadow: 0 2px 12px rgba(0, 201, 167, 0.15);
   border: none !important;
@@ -61,7 +59,6 @@ body {
 
 .bg-chat {
   background-image: url('/bg1.png') !important;
-  /* Replace with your image path */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

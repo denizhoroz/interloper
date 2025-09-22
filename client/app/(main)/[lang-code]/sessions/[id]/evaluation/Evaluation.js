@@ -1,5 +1,3 @@
-// Stretch out eval blocks to sides
-
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";

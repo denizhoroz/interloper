@@ -88,6 +88,27 @@ Daha sonra bu adres üzerinden websitesine local olarak ulaşabilirsiniz.
 
 http://localhost:3000
 
+## Gereksinimler ve Ortam Değişkenleri
+
+Projeyi yerel olarak çalıştırmak için aşağıdaki ortam değişkenlerini ayarlamanız gerekmektedir:
+
+### Sunucu için `.env` dosyası (`server/.env`):
+
+```
+PORT=5000
+CLIENT_URL=http://localhost:3000
+PYTHON_SERVICE_URL=http://localhost:8000
+DEEPL_API_KEY=<YOUR_API_KEY_HERE>
+```
+
+### İstemci için `.env.local` dosyası (`client/.env.local`):
+
+```
+NEXT_PUBLIC_API_URL=http://localhost:5000
+```
+
+> Şu anda proje sadece yerel geliştirme için uygundur. Sunucu ve istemciyi kendi bilgisayarınızda başlatmanız gerekmektedir. Barındırma (hosting) desteği yoktur.
+
 ## Katkıda Bulunanlar
 
 - [Emre Atasavun](https://www.linkedin.com/in/emre-atasavun-125918303/) - [GitHub](https://github.com/Fridgemann)

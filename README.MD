@@ -1,3 +1,5 @@
+<img src="assets/overview.png">
+
 # Interloper
 
 Interloper, gerçek hayat senaryolarında konuşma pratiği yaparak dil öğrenmeyi kolaylaştıran bir platformdur. Yapay zeka destekli diyaloglar sayesinde, seçtiğiniz senaryoda kendinizi gerçek bir ortamda hissedebilir ve konuşma becerilerinizi geliştirebilirsiniz.

@@ -19,21 +19,74 @@ Interloper, gerçek hayat senaryolarında konuşma pratiği yaparak dil öğrenm
 3. **Senaryoda konuşma gerçekleştir:** Yapay zekayla senaryoya uygun bir diyalog kurun.
 4. **Sonuçlarını gör:** Konuşmanın sonunda performansınızı ve geri bildirimi inceleyin.
 
+<img src="assets/overview2.png">
+
+## Gereksinimler
+- llama-3-8b-instruct (quantized Q4_K_M) modeli
+- Node.js >= 18
+- npm >= 9
+- Python == 3.10.11
+- Gerekli Python paketleri (requirements.txt dosyasına bakınız)
+- Modern bir web tarayıcısı (Chrome, Firefox, Edge, Safari)
+
 ## Kurulum
 
-```bash
+Proje üç servis üzerinden çalışmaktadır. Bu yüzden toplam 3 terminal açmanız gerekmektedir. İlk başta herhangi bir terminal üzerinden repoyu klonlayın.
+
+```ps
 git clone https://github.com/denizhoroz/interloper
-cd interloper/client
-npm install
-npm start build
-npm start
+```
+
+İlk başta aşağıdaki drive linkini kullanarak LLM modelini .rar olarak indirebilirsiniz. (Github'ın boyut sınırlamalarından ötürü modeli Github üzerinden yükleyemiyoruz.) 
+
+<a href="https://drive.google.com/drive/folders/1-bkOGLRl5KOBetnYmxI3bM9_6DYHd2RG?usp=sharing">Model linki</a>
+
+Modeli indirdikten ve unzipledikten (Buraya ayıkla) sonra models/ klasörünü interloper/ klasörünün içine atın.
+
+Birinci terminal üzerinde `server` servisini başlatın.
+
+```ps
+# Birinci terminal
 cd interloper/server
 npm install
 npm start
-cd interloper/
 ```
 
-Arka uç servisleri için `server` klasörünü ve Python servislerini başlatmayı unutmayın.
+İkinci terminal üzerinde `client` servisini başlatın.
+
+```ps
+# İkinci terminal
+cd interloper/client
+npm install
+npm run build
+npm start
+```
+
+Üçüncü terminal üzerinde `Python` sanal ortamı kurun ve aktif edin.
+
+```ps
+# Üçüncü terminal
+py -3.10 -m venv venv
+venv/Scripts/activate
+```
+
+Gerekli Python paketlerini `requirements.txt` ile indirin.
+
+```ps
+# Üçüncü terminal
+pip install -r requirements.txt
+```
+
+`Python` servisini başlatın
+
+```ps
+cd/server
+python py_service.py
+```
+
+Daha sonra bu adres üzerinden websitesine local olarak ulaşabilirsiniz.
+
+http://localhost:3000
 
 ## Katkıda Bulunanlar
 
